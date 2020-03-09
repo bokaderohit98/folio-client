@@ -1,5 +1,13 @@
 import React from 'react';
+import { Empty } from '../components';
 
-const Education = () => <h1>Education</h1>;
+const Education = () => {
+    return (
+        <Empty
+            actionText="Add Education"
+            action={() => window.alert('working')}
+        />
+    );
+};
 
 export default Education;
