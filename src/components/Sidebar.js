@@ -17,6 +17,9 @@ const Container = styled.div`
     }};
     box-shadow: ${props => props.theme.shadows[6]};
     z-index: 10;
+    position: fixed;
+    left: 0px;
+    top: 0px;
 `;
 
 const HeaderContainer = styled.div`

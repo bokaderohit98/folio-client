@@ -8,17 +8,12 @@ import routes from './constants/routes';
 import { Sidebar } from './components';
 
 const Container = styled.div`
+    position: relative;
+    left: 240px;
     height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 0px;
-`;
-
-const MainArea = styled.div`
-    flex: 1;
-    height: 100%;
-    background: ${props => props.theme.palette.background.paper};
+    width: calc(100% - 240px);
+    justify-content: center;
+    align-items: center;
 `;
 
 const makeRoutes = () => {
@@ -38,14 +33,12 @@ const App = () => {
     return (
         <Router>
             <ThemeProvider theme={theme}>
+                <Sidebar
+                    darkMode={darkMode}
+                    toggleDarkMode={() => setDarkMode(!darkMode)}
+                />
                 <Container>
-                    <Sidebar
-                        darkMode={darkMode}
-                        toggleDarkMode={() => setDarkMode(!darkMode)}
-                    />
-                    <MainArea>
-                        <Switch>{makeRoutes()}</Switch>
-                    </MainArea>
+                    <Switch>{makeRoutes()}</Switch>
                 </Container>
             </ThemeProvider>
         </Router>
