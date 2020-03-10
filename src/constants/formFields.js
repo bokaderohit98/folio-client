@@ -1,16 +1,20 @@
 export default {
     education: [
-        { name: 'from' },
-        { name: 'to' },
-        { name: 'institute' },
-        { name: 'degree' },
-        { name: 'specialization' }
+        { name: 'from', type: 'date', required: true },
+        { name: 'to', type: 'date', required: true },
+        { name: 'institute', type: 'string', required: true },
+        { name: 'degree', type: 'string', required: true },
+        { name: 'specialization', type: 'string' }
     ],
     work: [
-        { name: 'from' },
-        { name: 'to' },
-        { name: 'organization' },
-        { name: 'position' }
+        { name: 'from', type: 'date', required: true },
+        { name: 'to', type: 'date', required: true },
+        { name: 'organization', type: 'string', required: true },
+        { name: 'position', type: 'string', required: true }
     ],
-    achivement: [{ name: 'year' }, { name: 'title' }, { name: 'description' }]
+    achivement: [
+        { name: 'year', type: 'date', required: true },
+        { name: 'title', type: 'string', required: true },
+        { name: 'description', type: 'long-string', required: false }
+    ]
 };

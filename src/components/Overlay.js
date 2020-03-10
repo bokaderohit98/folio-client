@@ -11,7 +11,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 100;
-    opacity: 0.7;
+    opacity: 0.9;
     background: ${props => props.theme.palette.grey.A700};
 `;
 

@@ -1,77 +1,82 @@
 import React from 'react';
 import { Fab } from '@material-ui/core';
-import { Listing, ListingMenu, DeleteModal } from '../components';
+import {
+    Listing,
+    ListingMenu,
+    DeleteModal,
+    CreateModal,
+    Empty
+} from '../components';
 
 const data = [
     {
         _id: '1',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '2',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '3',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '4',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '5',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '6',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '7',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '8',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '9',
-        from: '26 November 2012',
-        to: '33 December 2011',
+        from: '1583855126172',
+        to: '1583121212125',
         organization: 'Innovaccer',
         position: 'Software Developer'
     },
     {
         _id: '10',
-        from: '26 November 2012',
-        to: '33 December 2011',
-        organization: 'Innovaccer',
-        position: 'Software Developer'
+        from: '1583855126172',
+        to: '1583121212125',
+        organization: 'Innovaccer'
     }
 ];
 
@@ -86,10 +91,6 @@ class Work extends React.Component {
             edit: false,
             create: false
         }
-    };
-
-    handleFabClick = () => {
-        console.log('Fab Clicked');
     };
 
     handleMenuClick = data => event => {
@@ -123,6 +124,16 @@ class Work extends React.Component {
         this.handleToggleModal('delete')();
     };
 
+    handleCreate = () => {
+        console.log('created');
+        this.handleToggleModal('create')();
+    };
+
+    handleEdit = () => {
+        console.log('edited');
+        this.handleToggleModal('edit')();
+    };
+
     render() {
         const { menuData, showModal } = this.state;
         return (
@@ -142,7 +153,7 @@ class Work extends React.Component {
                 <Fab
                     color="primary"
                     aria-label="add"
-                    onClick={this.handleFabClick}
+                    onClick={this.handleToggleModal('create')}
                     style={{
                         position: 'fixed',
                         bottom: '12px',
@@ -156,7 +167,35 @@ class Work extends React.Component {
                     onClose={this.handleToggleModal('delete')}
                     onDelete={this.handleDelete}
                 />
+                <CreateModal
+                    show={showModal.create}
+                    type="create"
+                    entity="work"
+                    onClose={this.handleToggleModal('create')}
+                    onSuccess={this.handleCreate}
+                />
+                <CreateModal
+                    show={showModal.edit}
+                    type="edit"
+                    data={menuData.data}
+                    entity="work"
+                    onClose={this.handleToggleModal('edit')}
+                    onSuccess={this.handleEdit}
+                />
             </>
+            // <>
+            //     <Empty
+            //         actionText="Add Work"
+            //         action={this.handleToggleModal('create')}
+            //     />
+            //     <CreateModal
+            //         show={showModal.create}
+            //         type="create"
+            //         entity="work"
+            //         onClose={this.handleToggleModal('create')}
+            //         onSuccess={this.handleCreate}
+            //     />
+            // </>
         );
     }
 }

@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 
 import formFields from '../constants/formFields';
+import { getDate } from '../utils/date';
 
 const Container = styled.div`
     padding: 0;
@@ -59,9 +60,11 @@ const makeTable = (type, data, onMenuClick) => {
                 <TableBody>
                     {data.map(row => (
                         <TableRow key={Math.random()}>
-                            {fields.map(({ name }) => (
+                            {fields.map(({ name, type }) => (
                                 <TableCell key={name}>
-                                    {row[name] || '-'}
+                                    {type === 'date' && row[name]
+                                        ? getDate(row[name])
+                                        : row[name] || '-'}
                                 </TableCell>
                             ))}
                             <TableCell>
