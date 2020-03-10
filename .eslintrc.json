@@ -30,6 +30,6 @@
       "react/jsx-props-no-spreading": 0,
       "consistent-return": 0,
       "no-useless-constructor": 0,
-      "no-undef": 0
+      "react/state-in-constructor": 0
   }
 }

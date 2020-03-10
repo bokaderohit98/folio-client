@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-    Fab,
     IconButton,
     TableContainer,
     Table,
@@ -16,6 +15,7 @@ import formFields from '../constants/formFields';
 
 const Container = styled.div`
     padding: 0;
+    height: 100vh;
     background: ${props => props.theme.palette.background.paper};
 `;
 
@@ -31,20 +31,21 @@ const Heading = styled.h1`
 const DataTable = styled.div`
     padding: 0 12px;
     .MuiTableContainer-root {
-        background: ${props => props.theme.palette.background.paper};
         box-shadow: ${props => props.theme.shadows[10]};
+        max-height: 70vh;
     }
     .MuiTableCell-head,
     .MuiTableCell-body {
+        background: ${props => props.theme.palette.background.paper};
         color: ${props => props.theme.palette.text.primary};
     }
 `;
 
-const makeTable = (type, data) => {
+const makeTable = (type, data, onMenuClick) => {
     const fields = formFields[type];
     return (
         <TableContainer component={Paper}>
-            <Table>
+            <Table stickyHeader>
                 <TableHead>
                     <TableRow>
                         {fields.map(({ name }) => (
@@ -64,7 +65,10 @@ const makeTable = (type, data) => {
                                 </TableCell>
                             ))}
                             <TableCell>
-                                <IconButton color="secondary">
+                                <IconButton
+                                    color="secondary"
+                                    onClick={onMenuClick(row)}
+                                >
                                     <i className="material-icons">more_vert</i>
                                 </IconButton>
                             </TableCell>
@@ -77,26 +81,12 @@ const makeTable = (type, data) => {
     );
 };
 
-const Listing = ({ type, data, showFab, fabAction }) => {
+const Listing = ({ type, data, onMenuClick }) => {
     return (
         <Container>
             <Heading>{type.toUpperCase()}</Heading>
-            <DataTable>{makeTable(type, data)}</DataTable>
-            <div style={{ height: '100px' }} />
-            {showFab && (
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    onClick={fabAction}
-                    style={{
-                        position: 'fixed',
-                        bottom: '12px',
-                        right: '12px'
-                    }}
-                >
-                    <i className="material-icons">add</i>
-                </Fab>
-            )}
+            <DataTable>{makeTable(type, data, onMenuClick)}</DataTable>
+            <div style={{ height: '80px' }} />
         </Container>
     );
 };
