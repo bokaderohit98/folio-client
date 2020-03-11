@@ -32,7 +32,7 @@ const MainArea = styled(Main)`
     }
 `;
 
-const makeFormFields = ({ type: componentType, data, entity }) => {
+const makeFormFields = ({ type: componentType, data, entity, onChange }) => {
     const fields = formFields[entity];
     const isEdit = componentType === 'edit';
 
@@ -44,8 +44,8 @@ const makeFormFields = ({ type: componentType, data, entity }) => {
                         required={required}
                         label={capitalize(name)}
                         key={name}
-                        value={isEdit ? data[name] : ''}
-                        color="primary"
+                        value={data[name]}
+                        onChange={onChange(type, name)}
                     />
                 );
             case 'long-string':
@@ -56,8 +56,8 @@ const makeFormFields = ({ type: componentType, data, entity }) => {
                         key={name}
                         multiline
                         rows={4}
-                        value={isEdit ? data[name] : ''}
-                        color="secondary"
+                        value={data[name]}
+                        onChange={onChange(type, name)}
                     />
                 );
             case 'date':
@@ -69,8 +69,10 @@ const makeFormFields = ({ type: componentType, data, entity }) => {
                             format="DD/MM/YYYY"
                             margin="normal"
                             label={`${capitalize(name)}*`}
-                            onChange={date => console.log(date)}
-                            value={isEdit ? new Date(Number(data[name])) : null}
+                            onChange={onChange(type, name)}
+                            value={
+                                data[name] ? new Date(Number(data[name])) : null
+                            }
                         />
                     </MuiPickersUtilsProvider>
                 );
@@ -82,7 +84,15 @@ const makeFormFields = ({ type: componentType, data, entity }) => {
     });
 };
 
-const CreateModal = ({ show, type, data, entity, onClose, onSuccess }) => {
+const CreateModal = ({
+    show,
+    type,
+    data,
+    entity,
+    onClose,
+    onSuccess,
+    onChange
+}) => {
     const theme = createMuiTheme({
         palette: {
             primary: blue,
@@ -107,7 +117,7 @@ const CreateModal = ({ show, type, data, entity, onClose, onSuccess }) => {
                                 type === 'create' ? 'ADD NEW' : 'EDIT'
                             } ${entity.toUpperCase()}`}
                         </Title>
-                        {makeFormFields({ type, data, entity })}
+                        {makeFormFields({ type, data, entity, onChange })}
                         <MuiThemeProvider theme={theme}>
                             <Action>
                                 <Button

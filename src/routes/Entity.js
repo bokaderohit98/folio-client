@@ -13,43 +13,50 @@ class Work extends React.Component {
         super(props);
         const { data, type } = this.props;
         this.state = {
-            menuData: {
-                anchorPosition: null,
-                data: null
-            },
+            type,
+            data,
+            anchorPosition: null,
+            instance: {},
             showModal: {
                 delete: false,
                 edit: false,
                 create: false
-            },
-            data,
-            type
+            }
         };
     }
 
     handleMenuClick = data => event => {
         const { clientX: left, clientY: top } = event;
         this.setState({
-            menuData: {
-                anchorPosition: { left, top },
-                data
-            }
+            anchorPosition: { left, top },
+            instance: data
         });
     };
 
     handleMenuClose = () => {
-        const { menuData } = this.state;
-        const updated = { ...menuData };
-        updated.anchorPosition = null;
-        this.setState({ menuData: updated });
+        this.setState({ anchorPosition: null });
     };
 
     handleToggleModal = type => () => {
-        const { showModal } = this.state;
+        const { showModal, instance } = this.state;
         const updated = { ...showModal };
         updated[type] = !showModal[type];
-        this.setState({ showModal: updated });
+        this.setState({
+            showModal: updated,
+            instance: type === 'create' ? {} : instance
+        });
         this.handleMenuClose();
+    };
+
+    handleChange = (type, attribute) => event => {
+        const { instance } = this.state;
+        const updated = { ...instance };
+        if (type === 'string' || type === 'long-string') {
+            const { value } = event.target;
+            updated[attribute] = value;
+        } else if (type === 'date') updated[attribute] = event.valueOf();
+
+        this.setState({ instance: updated });
     };
 
     handleDelete = () => {
@@ -59,17 +66,19 @@ class Work extends React.Component {
     };
 
     handleCreate = () => {
-        console.log('created');
+        const { instance } = this.state;
+        console.log(instance);
         this.handleToggleModal('create')();
     };
 
     handleEdit = () => {
-        console.log('edited');
+        const { instance } = this.state;
+        console.log(instance);
         this.handleToggleModal('edit')();
     };
 
     render() {
-        const { menuData, showModal, data, type } = this.state;
+        const { showModal, data, type, instance, anchorPosition } = this.state;
         const entityData = data[type];
 
         return (
@@ -83,7 +92,7 @@ class Work extends React.Component {
                             onMenuClick={this.handleMenuClick}
                         />
                         <ListingMenu
-                            menuData={menuData}
+                            menuData={{ data: instance, anchorPosition }}
                             onMenuClose={this.handleMenuClose}
                             onEditClick={this.handleToggleModal('edit')}
                             onDeleteClick={this.handleToggleModal('delete')}
@@ -118,16 +127,19 @@ class Work extends React.Component {
                     show={showModal.create}
                     entity={type}
                     type="create"
+                    data={instance}
                     onClose={this.handleToggleModal('create')}
                     onSuccess={this.handleCreate}
+                    onChange={this.handleChange}
                 />
                 <CreateModal
                     show={showModal.edit}
                     entity={type}
                     type="edit"
-                    data={menuData.data}
+                    data={instance}
                     onClose={this.handleToggleModal('edit')}
                     onSuccess={this.handleEdit}
+                    onChange={this.handleChange}
                 />
             </>
         );
