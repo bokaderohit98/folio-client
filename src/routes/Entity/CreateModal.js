@@ -1,21 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { grey, blue } from '@material-ui/core/colors';
-import {
-    Button,
-    MuiThemeProvider,
-    createMuiTheme,
-    TextField
-} from '@material-ui/core';
+import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 
-import DateFnsUtils from '@date-io/moment';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker
-} from '@material-ui/pickers';
-
-import { capitalize } from '../../utils/string';
-import dataFields from '../../constants/dataFields';
 import { Overlay } from '../../components';
 import {
     Container,
@@ -23,6 +10,8 @@ import {
     Title,
     Action
 } from '../../constants/modalContainers';
+
+import makeFormFields from '../../utils/makeFormFields';
 
 const MainArea = styled(Main)`
     .MuiInputBase-root,
@@ -36,58 +25,6 @@ const MainArea = styled(Main)`
         margin-bottom: 24px;
     }
 `;
-
-const makeFormFields = ({ type: componentType, data, entity, onChange }) => {
-    const fields = dataFields[entity];
-    const isEdit = componentType === 'edit';
-
-    return fields.map(({ name, required, type }) => {
-        switch (type) {
-            case 'string':
-                return (
-                    <TextField
-                        required={required}
-                        label={capitalize(name)}
-                        key={name}
-                        value={data[name]}
-                        onChange={onChange(type, name)}
-                    />
-                );
-            case 'long-string':
-                return (
-                    <TextField
-                        required={required}
-                        label={capitalize(name)}
-                        key={name}
-                        multiline
-                        rows={4}
-                        value={data[name]}
-                        onChange={onChange(type, name)}
-                    />
-                );
-            case 'date':
-                return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} key={name}>
-                        <KeyboardDatePicker
-                            disableToolbar
-                            variant="inline"
-                            format="DD/MM/YYYY"
-                            margin="normal"
-                            label={`${capitalize(name)}*`}
-                            onChange={onChange(type, name)}
-                            value={
-                                data[name] ? new Date(Number(data[name])) : null
-                            }
-                        />
-                    </MuiPickersUtilsProvider>
-                );
-
-            default:
-                break;
-        }
-        return null;
-    });
-};
 
 const CreateModal = ({
     show,
