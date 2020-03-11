@@ -59,6 +59,7 @@ export default [
         path: '/settings',
         Component: Settings,
         exact: true,
+        props: { data },
         verificationRequired: true,
         listedOnSidebar: true
     }

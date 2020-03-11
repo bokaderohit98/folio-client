@@ -1,5 +1,12 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import styled from 'styled-components';
+import {
+    TextField,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl
+} from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
@@ -7,11 +14,33 @@ import {
 import MomentUtils from '@date-io/moment';
 import { capitalize } from './string';
 import dataFields from '../constants/dataFields';
+import { Map } from '../components';
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .MuiInputBase-root,
+    .MuiInputLabel-root,
+    .MuiFormLabel-root,
+    .MuiSelectBase-root,
+    .MuiFormLabel-root.Mui-focused {
+        color: ${props => props.theme.palette.text.primary};
+        font-size: 16px;
+    }
+
+    .MuiFormControl-root {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 24px;
+    }
+`;
 
 export default ({ data, entity, onChange }) => {
     const fields = dataFields[entity];
 
-    return fields.map(({ name, required, type }) => {
+    const form = fields.map(({ name, required, type, choices, signature }) => {
         switch (type) {
             case 'string':
                 return (
@@ -43,7 +72,7 @@ export default ({ data, entity, onChange }) => {
                             variant="inline"
                             format="DD/MM/YYYY"
                             margin="normal"
-                            label={`${capitalize(name)}*`}
+                            label={`${capitalize(name)} *`}
                             onChange={onChange(type, name)}
                             value={
                                 data[name] ? new Date(Number(data[name])) : null
@@ -51,10 +80,43 @@ export default ({ data, entity, onChange }) => {
                         />
                     </MuiPickersUtilsProvider>
                 );
+            case 'select':
+                return (
+                    <FormControl key={name}>
+                        <InputLabel id={name}>{`${capitalize(name)}${
+                            required ? ' *' : ''
+                        }`}</InputLabel>
+                        <Select
+                            labelId={name}
+                            value={data[name]}
+                            onChange={onChange(type, name)}
+                        >
+                            {choices.map(choice => (
+                                <MenuItem key={choice} value={choice}>
+                                    {capitalize(choice)}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                );
+            case 'map':
+                return (
+                    <Map
+                        key={name}
+                        attribute={name}
+                        label={capitalize(name)}
+                        data={data[name]}
+                        onChange={onChange}
+                        choices={choices}
+                        signature={signature}
+                    />
+                );
 
             default:
                 break;
         }
         return null;
     });
+
+    return <Container>{form}</Container>;
 };

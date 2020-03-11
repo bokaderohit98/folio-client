@@ -16,5 +16,27 @@ export default {
         { name: 'year', type: 'date', required: true },
         { name: 'title', type: 'string', required: true },
         { name: 'description', type: 'long-string', required: false }
+    ],
+    user: [
+        { name: 'name', type: 'string', required: true },
+        { name: 'email', type: 'email', required: true },
+        {
+            name: 'gender',
+            type: 'select',
+            required: true,
+            choices: ['male', 'female', 'other']
+        },
+        {
+            name: 'dob',
+            type: 'date',
+            required: true
+        },
+        {
+            name: 'social_handles',
+            type: 'map',
+            required: false,
+            choices: ['twitter', 'facebook', 'linkedin', 'instagram', 'reddit'],
+            signature: { type: '', handle: '' }
+        }
     ]
 };

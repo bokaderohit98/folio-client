@@ -4,27 +4,9 @@ import { grey, blue } from '@material-ui/core/colors';
 import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 
 import { Overlay } from '../../components';
-import {
-    Container,
-    Main,
-    Title,
-    Action
-} from '../../constants/modalContainers';
+import { Container, Main, Title, Action } from './modalContainers';
 
 import makeFormFields from '../../utils/makeFormFields';
-
-const MainArea = styled(Main)`
-    .MuiInputBase-root,
-    .MuiInputLabel-root,
-    .MuiFormLabel-root.Mui-focused {
-        color: ${props => props.theme.palette.text.primary};
-    }
-
-    .MuiFormControl-root {
-        width: 100%;
-        margin-bottom: 24px;
-    }
-`;
 
 const CreateModal = ({
     show,
@@ -47,7 +29,7 @@ const CreateModal = ({
             <>
                 <Overlay />
                 <Container>
-                    <MainArea>
+                    <Main>
                         <Title
                             style={{
                                 marginBottom: '20px',
@@ -79,7 +61,7 @@ const CreateModal = ({
                                 </Button>
                             </Action>
                         </MuiThemeProvider>
-                    </MainArea>
+                    </Main>
                 </Container>
             </>
         )

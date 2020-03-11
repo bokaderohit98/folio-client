@@ -3,13 +3,7 @@ import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
 
 import Overlay from '../../components/Overlay';
-import {
-    Container,
-    Main,
-    Title,
-    Subtitle,
-    Action
-} from '../../constants/modalContainers';
+import { Container, Main, Title, Subtitle, Action } from './modalContainers';
 
 const DeleteModal = ({ show, onDelete, onClose }) => {
     const theme = createMuiTheme({

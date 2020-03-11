@@ -145,11 +145,11 @@ const user = {
     dob: '1583855126172',
     email: 'bokaderohit98@gmail.com',
     gender: 'male',
-    social_handles: {
-        twitter: 'yelloveAddict',
-        github: 'bokaderohit98',
-        facebook: 'bokaderohit98'
-    }
+    social_handles: [
+        { type: 'twitter', handle: 'yelloveAddict' },
+        { type: 'facebook', handle: 'yelloveAddict' },
+        { type: 'facebook', handle: 'yelloveAddict' }
+    ]
 };
 
 export default {

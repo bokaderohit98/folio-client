@@ -1,3 +1,8 @@
 export const capitalize = string => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string
+        .split('_')
+        .map(item => {
+            return item.charAt(0).toUpperCase() + item.slice(1);
+        })
+        .join(' ');
 };
