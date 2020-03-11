@@ -1,12 +1,6 @@
-import {
-    Home,
-    Login,
-    Register,
-    Settings,
-    Education,
-    Work,
-    Achivement
-} from '../routes';
+import { Home, Login, Register, Settings, Entity } from '../routes';
+
+import data from './dummyData';
 
 export default [
     {
@@ -36,24 +30,27 @@ export default [
     {
         title: 'Education',
         path: '/education',
-        Component: Education,
+        Component: Entity,
         exact: true,
+        props: { data, type: 'education' },
         verificationRequired: true,
         listedOnSidebar: true
     },
     {
         title: 'Work',
         path: '/work',
-        Component: Work,
+        Component: Entity,
         exact: true,
+        props: { data, type: 'work' },
         verificationRequired: true,
         listedOnSidebar: true
     },
     {
         title: 'Achivement',
         path: '/achivement',
-        Component: Achivement,
+        Component: Entity,
         exact: true,
+        props: { data, type: 'achivement' },
         verificationRequired: true,
         listedOnSidebar: true
     },
