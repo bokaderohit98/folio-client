@@ -140,8 +140,21 @@ const achivement = [
     }
 ];
 
+const user = {
+    name: 'Rohit Bokade',
+    dob: '1583855126172',
+    email: 'bokaderohit98@gmail.com',
+    gender: 'male',
+    social_handles: {
+        twitter: 'yelloveAddict',
+        github: 'bokaderohit98',
+        facebook: 'bokaderohit98'
+    }
+};
+
 export default {
     work,
     education,
-    achivement
+    achivement,
+    ...user
 };

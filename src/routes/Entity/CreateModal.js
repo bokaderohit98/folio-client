@@ -1,23 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
+import { grey, blue } from '@material-ui/core/colors';
 import {
     Button,
     MuiThemeProvider,
     createMuiTheme,
     TextField
 } from '@material-ui/core';
-import { grey, blue } from '@material-ui/core/colors';
 
+import DateFnsUtils from '@date-io/moment';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
 } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/moment';
 
-import formFields from '../constants/formFields';
-import Overlay from './Overlay';
-import { Container, Main, Title, Action } from '../constants/modalContainers';
-import { capitalize } from '../utils/string';
+import { capitalize } from '../../utils/string';
+import dataFields from '../../constants/dataFields';
+import { Overlay } from '../../components';
+import {
+    Container,
+    Main,
+    Title,
+    Action
+} from '../../constants/modalContainers';
 
 const MainArea = styled(Main)`
     .MuiInputBase-root,
@@ -33,7 +38,7 @@ const MainArea = styled(Main)`
 `;
 
 const makeFormFields = ({ type: componentType, data, entity, onChange }) => {
-    const fields = formFields[entity];
+    const fields = dataFields[entity];
     const isEdit = componentType === 'edit';
 
     return fields.map(({ name, required, type }) => {

@@ -1,12 +1,10 @@
 import React from 'react';
 import { Fab } from '@material-ui/core';
-import {
-    Listing,
-    ListingMenu,
-    DeleteModal,
-    CreateModal,
-    Empty
-} from '../components';
+import Empty from './Empty';
+import Listing from './Listing';
+import ListingMenu from './ListingMenu';
+import CreateModal from './CreateModal';
+import DeleteModal from './DeleteModal';
 
 class Work extends React.Component {
     constructor(props) {

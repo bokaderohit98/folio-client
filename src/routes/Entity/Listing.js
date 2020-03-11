@@ -11,8 +11,8 @@ import {
     Paper
 } from '@material-ui/core';
 
-import formFields from '../constants/formFields';
-import { getDate } from '../utils/date';
+import dataFields from '../../constants/dataFields';
+import { getDate } from '../../utils/date';
 
 const Container = styled.div`
     padding: 0;
@@ -43,7 +43,7 @@ const DataTable = styled.div`
 `;
 
 const makeTable = (type, data, onMenuClick) => {
-    const fields = formFields[type];
+    const fields = dataFields[type];
     return (
         <TableContainer component={Paper}>
             <Table stickyHeader>
