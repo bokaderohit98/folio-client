@@ -68,8 +68,6 @@ export default ({ data, entity, onChange }) => {
                 return (
                     <MuiPickersUtilsProvider utils={MomentUtils} key={name}>
                         <KeyboardDatePicker
-                            disableToolbar
-                            variant="inline"
                             format="DD/MM/YYYY"
                             margin="normal"
                             label={`${capitalize(name)} *`}

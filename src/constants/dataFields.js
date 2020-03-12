@@ -35,7 +35,14 @@ export default {
             name: 'social_handles',
             type: 'map',
             required: false,
-            choices: ['twitter', 'facebook', 'linkedin', 'instagram', 'reddit'],
+            choices: [
+                'twitter',
+                'facebook',
+                'linkedin',
+                'instagram',
+                'reddit',
+                'youtube'
+            ],
             signature: { type: '', handle: '' }
         }
     ]

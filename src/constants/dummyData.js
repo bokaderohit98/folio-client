@@ -10,49 +10,21 @@ const work = [
         _id: '2',
         from: '1583855126172',
         to: '1583121212125',
-        organization: 'Innovaccer',
+        organization: 'Amazon',
         position: 'Software Developer'
     },
     {
         _id: '3',
         from: '1583855126172',
         to: '1583121212125',
-        organization: 'Innovaccer',
-        position: 'Software Developer'
-    },
-    {
-        _id: '4',
-        from: '1583855126172',
-        to: '1583121212125',
-        organization: 'Innovaccer',
-        position: 'Software Developer'
-    },
-    {
-        _id: '5',
-        from: '1583855126172',
-        to: '1583121212125',
-        organization: 'Innovaccer',
-        position: 'Software Developer'
-    },
-    {
-        _id: '6',
-        from: '1583855126172',
-        to: '1583121212125',
-        organization: 'Innovaccer',
-        position: 'Software Developer'
-    },
-    {
-        _id: '7',
-        from: '1583855126172',
-        to: '1583121212125',
-        organization: 'Innovaccer',
+        organization: 'Heroku',
         position: 'Software Developer'
     },
     {
         _id: '8',
         from: '1583855126172',
         to: '1583121212125',
-        organization: 'Innovaccer',
+        organization: 'American Express',
         position: 'Software Developer'
     },
     {
@@ -60,13 +32,14 @@ const work = [
         from: '1583855126172',
         to: '1583121212125',
         organization: 'Innovaccer',
-        position: 'Software Developer'
+        position: 'Product Intern'
     },
     {
         _id: '10',
         from: '1583855126172',
         to: '1583121212125',
-        organization: 'Innovaccer'
+        organization: 'Samsung',
+        position: 'Analyst'
     }
 ];
 
@@ -75,46 +48,39 @@ const education = [
         _id: '1',
         from: '1583855126172',
         to: '1583121212125',
-        title: 'Innovaccer',
-        degree: 'Software Developer',
+        institute: 'NSIT',
+        degree: 'B.E',
         specialization: 'Computer Engineering'
     },
     {
         _id: '2',
         from: '1583855126172',
         to: '1583121212125',
-        institute: 'Innovaccer',
-        degree: 'Software Developer'
+        institute: 'TITS',
+        degree: 'M.B.A'
     },
     {
         _id: '3',
         from: '1583855126172',
         to: '1583121212125',
-        institute: 'Innovaccer',
-        degree: 'Software Developer'
+        institute: 'CBSE',
+        degree: 'Higher Secondary School Certificate'
     },
     {
         _id: '4',
         from: '1583855126172',
         to: '1583121212125',
-        institute: 'Innovaccer',
-        degree: 'Software Developer',
+        institute: 'CBSE',
+        degree: 'Senior Secondary School Certificate',
         specialization: 'Computer Engineering'
     },
     {
         _id: '5',
         from: '1583855126172',
         to: '1583121212125',
-        institute: 'Innovaccer',
-        degree: 'Software Developer',
+        institute: 'Munna Institute of Technology',
+        degree: 'M.S',
         specialization: 'Computer Engineering'
-    },
-    {
-        _id: '6',
-        from: '1583855126172',
-        to: '1583121212125',
-        institute: 'Innovaccer',
-        degree: 'Software Developer'
     }
 ];
 
@@ -122,33 +88,33 @@ const achivement = [
     {
         _id: '1',
         year: '1583855126172',
-        title: 'Innovaccer',
+        title: 'Best Intern',
         description:
             'This is shit as fuck and ikdf fjkdf dfjkdsjfdf fsjkfkd  jkdsfkj'
     },
     {
         _id: '1',
         year: '1583855126172',
-        title: 'Innovaccer'
+        title: 'Employe of Year'
     },
     {
         _id: '1',
         year: '1583855126172',
-        title: 'Innovaccer',
+        title: 'State Topper in HSSC',
         description:
             'This is shit as fuck and ikdf fjkdf dfjkdsjfdf fsjkfkd  jkdsfkj'
     }
 ];
 
 const user = {
-    name: 'Rohit Bokade',
-    dob: '1583855126172',
-    email: 'bokaderohit98@gmail.com',
+    name: 'rohit bokade',
+    dob: '0000000000000',
+    email: 'bokaderohit98',
     gender: 'male',
     social_handles: [
         { type: 'twitter', handle: 'yelloveAddict' },
-        { type: 'facebook', handle: 'yelloveAddict' },
-        { type: 'facebook', handle: 'yelloveAddict' }
+        { type: 'facebook', handle: 'bokaderohit98' },
+        { type: 'reddit', handle: 'iamRohit' }
     ]
 };
 

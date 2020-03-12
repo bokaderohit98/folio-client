@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Avatar } from '@material-ui/core';
 import avatar from '../../assets/avatarFemale.png';
 import Edit from './Edit';
+import { capitalize } from '../../utils/string';
 
 const Container = styled.div`
     display: flex;
@@ -89,7 +90,7 @@ class Settings extends React.Component {
             <Container>
                 <Head>
                     <Avatar src={avatar} />
-                    <p>{name}</p>
+                    <p>{capitalize(name)}</p>
                 </Head>
                 <Edit
                     data={user}

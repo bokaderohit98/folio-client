@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { grey, blue } from '@material-ui/core/colors';
 import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 

@@ -8,6 +8,7 @@ export default [
         path: '/',
         Component: Home,
         exact: true,
+        props: { data },
         verificationRequired: false,
         listedOnSidebar: true
     },
