@@ -19,7 +19,6 @@ export default {
     ],
     user: [
         { name: 'name', type: 'string', required: true },
-        { name: 'email', type: 'email', required: true },
         {
             name: 'gender',
             type: 'select',
@@ -45,5 +44,25 @@ export default {
             ],
             signature: { type: '', handle: '' }
         }
+    ],
+    login: [
+        { name: 'email', type: 'string', required: true },
+        { name: 'password', type: 'password', required: true }
+    ],
+    register: [
+        { name: 'name', type: 'string', required: true },
+        { name: 'email', type: 'string', required: true },
+        { name: 'password', type: 'password', required: true },
+        {
+            name: 'gender',
+            type: 'select',
+            required: true,
+            choices: ['male', 'female', 'other']
+        },
+        { name: 'dob', type: 'date', required: true }
+    ],
+    loginOtp: [
+        { name: 'email', type: 'string', required: true },
+        { name: 'otp', type: 'string', required: true }
     ]
 };

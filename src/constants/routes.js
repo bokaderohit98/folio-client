@@ -1,32 +1,16 @@
-import { Home, Login, Register, Settings, Entity } from '../routes';
+import { Home, Authentication, Settings, Entity } from '../routes';
 
 import data from './dummyData';
 
 export default [
     {
         title: 'Home',
-        path: '/',
+        path: '/home',
         Component: Home,
         exact: true,
         props: { data },
         verificationRequired: false,
         listedOnSidebar: true
-    },
-    {
-        title: 'Register',
-        path: '/register',
-        Component: Register,
-        exact: true,
-        verificationRequired: false,
-        listedOnSidebar: false
-    },
-    {
-        title: 'Login',
-        path: '/login',
-        Component: Login,
-        exact: true,
-        verificationRequired: false,
-        listedOnSidebar: false
     },
     {
         title: 'Education',

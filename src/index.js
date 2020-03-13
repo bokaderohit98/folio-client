@@ -6,6 +6,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import ThemeService from './utils/themeService';
 import routes from './constants/routes';
 import { Sidebar } from './components';
+import { Authentication } from './routes';
 
 const Container = styled.div`
     position: relative;
@@ -16,10 +17,16 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const makeRoutes = () => {
+const makeRoutes = ({ darkMode, setDarkMode }) => {
     return routes.map(({ path, Component, exact, props }) => (
         <Route path={path} exact={exact} key={path}>
-            <Component {...props} />
+            <Sidebar
+                darkMode={darkMode}
+                toggleDarkMode={() => setDarkMode(!darkMode)}
+            />
+            <Container>
+                <Component {...props} />
+            </Container>
         </Route>
     ));
 };
@@ -32,13 +39,12 @@ const App = () => {
     return (
         <Router>
             <ThemeProvider theme={theme}>
-                <Sidebar
-                    darkMode={darkMode}
-                    toggleDarkMode={() => setDarkMode(!darkMode)}
-                />
-                <Container>
-                    <Switch>{makeRoutes()}</Switch>
-                </Container>
+                <Switch>
+                    <Route path="/" exact>
+                        <Authentication />
+                    </Route>
+                </Switch>
+                <Switch>{makeRoutes({ darkMode, setDarkMode })}</Switch>
             </ThemeProvider>
         </Router>
     );
