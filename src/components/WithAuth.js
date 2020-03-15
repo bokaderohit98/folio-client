@@ -10,6 +10,4 @@ const WithAuth = ({ children }) => {
     return null;
 };
 
-window.AuthService = AuthService;
-
 export default WithAuth;
