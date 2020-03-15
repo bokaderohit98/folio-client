@@ -7,7 +7,6 @@ import { capitalize } from '../../utils/string';
 import { getAge } from '../../utils/date';
 
 const Container = styled.div`
-    margin-top: 32px;
     padding: 16px;
     color: ${props => props.theme.palette.text.primary};
     display: flex;

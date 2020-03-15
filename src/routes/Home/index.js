@@ -8,11 +8,17 @@ const Container = styled.div`
     background: ${props => props.theme.palette.background.paper};
     display: flex;
     align-items: center;
+
+    .InfoGrid {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 `;
 
 const EntityContainer = styled(Grid)`
     position: relative;
-    padding: 56px 24px;
+    padding: 56px 40px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -35,7 +41,7 @@ class Home extends React.Component {
         return (
             <Container>
                 <Grid container>
-                    <Grid item sm={6}>
+                    <Grid item sm={6} className="InfoGrid">
                         <Info data={user} />
                     </Grid>
                     <EntityContainer item sm={6}>
