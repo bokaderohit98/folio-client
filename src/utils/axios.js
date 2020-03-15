@@ -1,13 +1,11 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
-import AuthService from './authService';
 
 axios.interceptors.request.use(
     config => {
-        const auth = new AuthService();
-
-        if (auth.isLoggedIn()) {
-            const token = auth.getToken();
+        if (authService.isLoggedIn()) {
+            const token = authService.getToken();
             config.headers.Authorization = `Bearer ${token}`;
         }
 
@@ -17,3 +15,5 @@ axios.interceptors.request.use(
         return Promise.reject(err);
     }
 );
+
+export default axios;
