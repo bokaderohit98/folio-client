@@ -4,8 +4,8 @@ import axios from 'axios';
 
 axios.interceptors.request.use(
     config => {
-        if (authService.isLoggedIn()) {
-            const token = authService.getToken();
+        if (auth.isLoggedIn()) {
+            const token = auth.getToken();
             config.headers.Authorization = `Bearer ${token}`;
         }
 

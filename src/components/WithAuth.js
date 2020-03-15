@@ -1,8 +1,7 @@
+/* eslint-disable no-undef */
 import { useHistory } from 'react-router-dom';
-import AuthService from '../utils/authService';
 
 const WithAuth = ({ children }) => {
-    const auth = new AuthService();
     const history = useHistory();
 
     if (auth.isLoggedIn()) return children;
