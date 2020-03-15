@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Primary from './Primary';
 import Secondary from './Secondary';
 
+import api from '../../api';
+
 const Container = styled.div`
     display: flex;
     height: 100vh;
@@ -130,7 +132,6 @@ class Authentication extends React.Component {
         else if (type === 'select')
             updatedData[entity][attribute] = event.target.value;
         this.setState({ data: updatedData });
-        console.log(updatedData);
     };
 
     handleGetOtp = () => {
@@ -138,7 +139,9 @@ class Authentication extends React.Component {
     };
 
     handleSubmit = type => () => {
-        console.log(this.state.data[type]);
+        const { data } = this.state;
+        if (type === 'loginViaPassword') api.loginViaPassword(data[type]);
+        else console.log(type);
     };
 
     getClasses = () => {
