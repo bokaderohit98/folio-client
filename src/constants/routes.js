@@ -1,4 +1,4 @@
-import { Home, Authentication, Settings, Entity } from '../routes';
+import { Home, Settings, Entity } from '../routes';
 
 import data from './dummyData';
 

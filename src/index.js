@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useState } from 'react';
 import ReactDom from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -5,7 +6,7 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import ThemeService from './utils/themeService';
 import routes from './constants/routes';
-import { Sidebar } from './components';
+import { Sidebar, WithAuth } from './components';
 import { Authentication } from './routes';
 
 const Container = styled.div`
@@ -20,13 +21,15 @@ const Container = styled.div`
 const makeRoutes = ({ darkMode, setDarkMode }) => {
     return routes.map(({ path, Component, exact, props }) => (
         <Route path={path} exact={exact} key={path}>
-            <Sidebar
-                darkMode={darkMode}
-                toggleDarkMode={() => setDarkMode(!darkMode)}
-            />
-            <Container>
-                <Component {...props} />
-            </Container>
+            <WithAuth>
+                <Sidebar
+                    darkMode={darkMode}
+                    toggleDarkMode={() => setDarkMode(!darkMode)}
+                />
+                <Container>
+                    <Component {...props} />
+                </Container>
+            </WithAuth>
         </Route>
     ));
 };
