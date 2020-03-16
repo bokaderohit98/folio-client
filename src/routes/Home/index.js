@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { Loading } from '../../components';
 
 import Info from './Info';
 import Entity from './Entity';
@@ -41,26 +42,28 @@ class Home extends React.Component {
             education,
             work,
             achivement,
-            userLoading,
-            userError
+            loading,
+            error
         } = this.props;
 
         return (
-            !userLoading &&
-            !userError && (
-                <Container>
-                    <Grid container>
-                        <Grid item sm={6} className="InfoGrid">
-                            <Info data={user} />
+            <>
+                {loading && <Loading />}
+                {!loading && !error && (
+                    <Container>
+                        <Grid container>
+                            <Grid item sm={6} className="InfoGrid">
+                                <Info data={user} />
+                            </Grid>
+                            <EntityContainer item sm={6}>
+                                <Entity label="education" data={education} />
+                                <Entity label="work" data={work} />
+                                <Entity label="achivement" data={achivement} />
+                            </EntityContainer>
                         </Grid>
-                        <EntityContainer item sm={6}>
-                            <Entity label="education" data={education} />
-                            <Entity label="work" data={work} />
-                            <Entity label="achivement" data={achivement} />
-                        </EntityContainer>
-                    </Grid>
-                </Container>
-            )
+                    </Container>
+                )}
+            </>
         );
     }
 }
