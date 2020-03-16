@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Switch } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import routes from '../constants/routes';
 import avatar from '../assets/avatarFemale.png';
@@ -47,6 +48,11 @@ const LinksContainer = styled.div`
     flex-direction: column;
     height: 100%;
     margin-top: 20px;
+
+    .disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
 `;
 
 const RouteLink = styled(Link)`
@@ -73,24 +79,29 @@ const OtherLink = styled.div`
     align-items: center;
 `;
 
-const makeMenu = () => {
+const makeMenu = verified => {
     return routes
         .filter(({ listedOnSidebar }) => listedOnSidebar)
         .map(({ title, path }) => (
-            <RouteLink to={path} key={title}>
+            <RouteLink
+                to={path}
+                key={title}
+                className={title !== 'Home' && !verified && 'disabled'}
+            >
                 {title}
             </RouteLink>
         ));
 };
 
 const Sidebar = ({ darkMode, toggleDarkMode }) => {
+    const user = useSelector(state => state.user);
     return (
         <Container>
             <HeaderContainer>
                 <Background />
                 <Avatar src={avatar} />
             </HeaderContainer>
-            <LinksContainer>{makeMenu()}</LinksContainer>
+            <LinksContainer>{makeMenu(user.verified)}</LinksContainer>
             <OtherLink>
                 Dark Mode{' '}
                 <Switch checked={darkMode} onChange={toggleDarkMode} />

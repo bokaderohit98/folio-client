@@ -48,8 +48,8 @@ const renderEducation = data => {
 };
 
 const renderWork = data => {
-    return data.map(({ position, organization }) => (
-        <>
+    return data.map(({ position, organization }, index) => (
+        <div key={position + organization + index}>
             <ListItem>
                 <ListItemText
                     primary={position}
@@ -57,18 +57,18 @@ const renderWork = data => {
                 />
             </ListItem>
             <Divider />
-        </>
+        </div>
     ));
 };
 
 const renderAchivement = data => {
-    return data.map(({ title }) => (
-        <>
+    return data.map(({ title }, index) => (
+        <div key={title + index}>
             <ListItem>
                 <ListItemText primary={title} />
             </ListItem>
             <Divider />
-        </>
+        </div>
     ));
 };
 

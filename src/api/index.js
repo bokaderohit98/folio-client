@@ -11,6 +11,18 @@ const loginViaPassword = credentials => {
         });
 };
 
+const resendVerificationEmail = (onSuccess, onFailure) => {
+    axios
+        .get(routes.resendVerificationEmail)
+        .then(() => {
+            onSuccess();
+        })
+        .catch(err => {
+            onFailure();
+        });
+};
+
 export default {
-    loginViaPassword
+    loginViaPassword,
+    resendVerificationEmail
 };
