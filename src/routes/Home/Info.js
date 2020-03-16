@@ -73,12 +73,13 @@ const Info = ({ data }) => {
                 <Chip label={`${getAge(dob)} Years`} color="primary" />
             </Chips>
             <HandlesContainer>
-                {socialHandles.map(({ type, handle }, index) => (
-                    <Handle key={type + handle + index}>
-                        <Avatar src={logos(type)} variant="square" />
-                        {`@${handle}`}
-                    </Handle>
-                ))}
+                {socialHandles &&
+                    socialHandles.map(({ type, handle }, index) => (
+                        <Handle key={type + handle + index}>
+                            <Avatar src={logos(type)} variant="square" />
+                            {`@${handle}`}
+                        </Handle>
+                    ))}
             </HandlesContainer>
         </Container>
     );

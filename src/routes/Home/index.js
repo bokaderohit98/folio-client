@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
+
 import Info from './Info';
 import Entity from './Entity';
+import { getUser } from '../../redux/actions';
 
 const Container = styled.div`
     background: ${props => props.theme.palette.background.paper};
@@ -27,32 +30,50 @@ const EntityContainer = styled(Grid)`
 `;
 
 class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        const { data: user } = props;
-        this.state = {
-            user
-        };
+    componentDidMount() {
+        const { getUser } = this.props;
+        getUser();
     }
 
     render() {
-        const { user } = this.state;
+        const {
+            user,
+            education,
+            work,
+            achivement,
+            userLoading,
+            userError
+        } = this.props;
 
         return (
-            <Container>
-                <Grid container>
-                    <Grid item sm={6} className="InfoGrid">
-                        <Info data={user} />
+            !userLoading &&
+            !userError && (
+                <Container>
+                    <Grid container>
+                        <Grid item sm={6} className="InfoGrid">
+                            <Info data={user} />
+                        </Grid>
+                        <EntityContainer item sm={6}>
+                            <Entity label="education" data={education} />
+                            <Entity label="work" data={work} />
+                            <Entity label="achivement" data={achivement} />
+                        </EntityContainer>
                     </Grid>
-                    <EntityContainer item sm={6}>
-                        <Entity label="education" data={user.education} />
-                        <Entity label="work" data={user.work} />
-                        <Entity label="achivement" data={user.achivement} />
-                    </EntityContainer>
-                </Grid>
-            </Container>
+                </Container>
+            )
         );
     }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+    user: state.user,
+    education: state.educations,
+    work: state.works,
+    achivement: state.achivements,
+    loading: state.userLoading,
+    error: state.userError
+});
+
+const mapDispatchToProps = { getUser };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -34,8 +34,8 @@ const Label = styled.p`
 `;
 
 const renderEducation = data => {
-    return data.map(({ degree, institute }) => (
-        <>
+    return data.map(({ degree, institute }, index) => (
+        <div key={degree + institute + index}>
             <ListItem>
                 <ListItemText
                     primary={degree}
@@ -43,7 +43,7 @@ const renderEducation = data => {
                 />
             </ListItem>
             <Divider />
-        </>
+        </div>
     ));
 };
 
@@ -73,15 +73,23 @@ const renderAchivement = data => {
 };
 
 const Entity = ({ label, data = [] }) => {
-    console.log(data);
     return (
         <Container>
             <Label>{capitalize(label)}</Label>
-            <List>
-                {label === 'education' && renderEducation(data)}
-                {label === 'work' && renderWork(data)}
-                {label === 'achivement' && renderAchivement(data)}
-            </List>
+            {data.length === 0 && (
+                <List>
+                    <ListItem>
+                        <ListItemText primary="Nothing To Show" />
+                    </ListItem>
+                </List>
+            )}
+            {data.length > 0 && (
+                <List>
+                    {label === 'education' && renderEducation(data)}
+                    {label === 'work' && renderWork(data)}
+                    {label === 'achivement' && renderAchivement(data)}
+                </List>
+            )}
         </Container>
     );
 };

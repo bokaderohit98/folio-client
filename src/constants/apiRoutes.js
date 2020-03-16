@@ -1,3 +1,4 @@
 export default {
-    loginViaPassword: '/api/user/login'
+    loginViaPassword: '/api/user/login',
+    getUser: '/api/user'
 };
