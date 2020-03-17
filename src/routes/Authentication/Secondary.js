@@ -20,7 +20,7 @@ const SubTitle = styled.p`
     line-height: 28px;
 `;
 
-const Secondary = ({ mode, onToggleMode }) => {
+const Secondary = ({ mode, disabled, onToggleMode }) => {
     return (
         <Container>
             <Title>
@@ -40,6 +40,7 @@ const Secondary = ({ mode, onToggleMode }) => {
                     marginTop: '28px',
                     borderColor: 'white'
                 }}
+                disabled={disabled}
                 onClick={onToggleMode}
             >
                 {mode === 'login' ? 'sign up' : 'log in'}

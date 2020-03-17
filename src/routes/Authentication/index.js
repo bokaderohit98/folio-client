@@ -104,6 +104,20 @@ class Authentication extends React.Component {
                 email: '',
                 otp: ''
             }
+        },
+        getOtpStatus: {
+            loading: false,
+            error: false,
+            success: false
+        },
+        loginStatus: {
+            loading: false,
+            error: false
+        },
+        registerStatus: {
+            loading: false,
+            error: false,
+            success: false
         }
     };
 
@@ -135,13 +149,101 @@ class Authentication extends React.Component {
     };
 
     handleGetOtp = () => {
-        console.log('Getting Otp');
+        const { data, getOtpStatus } = this.state;
+        this.setState({
+            getOtpStatus: {
+                ...getOtpStatus,
+                loading: true,
+                error: false,
+                success: false
+            }
+        });
+        api.getOtp(
+            { email: data.loginViaOtp.email },
+            () =>
+                this.setState({
+                    getOtpStatus: {
+                        ...getOtpStatus,
+                        loading: false,
+                        success: true
+                    }
+                }),
+            () =>
+                this.setState({
+                    getOtpStatus: {
+                        ...getOtpStatus,
+                        loading: false,
+                        error: true
+                    }
+                })
+        );
     };
 
     handleSubmit = type => () => {
         const { data } = this.state;
-        if (type === 'loginViaPassword') api.loginViaPassword(data[type]);
-        else console.log(type);
+
+        const onSuccessRegister = credentials =>
+            this.setState({
+                mode: 'login',
+                subMode: 'viaPassword',
+                data: {
+                    ...data,
+                    loginViaPassword: {
+                        email: credentials.email,
+                        password: credentials.password
+                    }
+                },
+                registerStatus: {
+                    loading: false,
+                    error: false,
+                    success: true
+                },
+                loginStatus: {
+                    loading: true,
+                    error: false
+                }
+            });
+
+        const onFailureLogin = () =>
+            this.setState({
+                loginStatus: {
+                    loading: false,
+                    error: true
+                }
+            });
+
+        const onFailureRegister = () =>
+            this.setState({
+                registerStatus: { loading: false, error: true }
+            });
+
+        if (type === 'loginViaPassword' || type === 'loginViaOtp')
+            this.setState({
+                loginStatus: {
+                    loading: true,
+                    error: false
+                }
+            });
+        else
+            this.setState({
+                registerStatus: {
+                    loading: true,
+                    error: false,
+                    success: false
+                }
+            });
+
+        if (type === 'loginViaPassword')
+            api.loginViaPassword(data.loginViaPassword, onFailureLogin);
+        else if (type === 'loginViaOtp')
+            api.loginViaOtp(data.loginViaOtp, onFailureLogin);
+        else
+            api.register(
+                data.register,
+                onSuccessRegister,
+                onFailureRegister,
+                onFailureLogin
+            );
     };
 
     getClasses = () => {
@@ -172,7 +274,14 @@ class Authentication extends React.Component {
             secondaryBorderStyleClass
         ] = this.getClasses();
 
-        const { mode, subMode, data } = this.state;
+        const {
+            mode,
+            subMode,
+            data,
+            getOtpStatus,
+            loginStatus,
+            registerStatus
+        } = this.state;
 
         return (
             <Container>
@@ -181,6 +290,9 @@ class Authentication extends React.Component {
                         mode={mode}
                         subMode={subMode}
                         data={data}
+                        getOtpStatus={getOtpStatus}
+                        loginStatus={loginStatus}
+                        registerStatus={registerStatus}
                         onToggleSubMode={this.handleToggleSubMode}
                         onChange={this.handleChange}
                         onSubmit={this.handleSubmit}
@@ -191,6 +303,12 @@ class Authentication extends React.Component {
                     <SecondaryContent className={secondaryContentClass}>
                         <Secondary
                             mode={mode}
+                            disabled={
+                                getOtpStatus.loading ||
+                                loginStatus.loading ||
+                                registerStatus.loading ||
+                                registerStatus.success
+                            }
                             onToggleMode={this.handleToggleMode}
                         />
                     </SecondaryContent>

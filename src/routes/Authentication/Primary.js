@@ -13,6 +13,7 @@ import {
     MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Container = styled.div`
     display: flex;
@@ -45,6 +46,11 @@ const FootNote = styled.div`
     font-size: 14px;
 `;
 
+const Message = styled.p`
+    font-size: 14px;
+    margin-top: 12px;
+`;
+
 const ButtonGroup = styled.div`
     display: flex;
     padding: 0 16px;
@@ -55,6 +61,8 @@ const ButtonGroup = styled.div`
 
 const renderLoginViaPassword = ({
     data,
+    loginStatus,
+    registerStatus,
     onToggleSubMode,
     onChange,
     onSubmit
@@ -65,40 +73,55 @@ const renderLoginViaPassword = ({
             <TextField
                 label="Email"
                 required
+                disabled={loginStatus.loading}
                 value={data.email}
                 onChange={onChange('string', 'email')}
             />
             <TextField
                 label="Password"
                 required
+                disabled={loginStatus.loading}
                 value={data.password}
                 onChange={onChange('string', 'password')}
                 type="password"
             />
             <Button
                 variant="outlined"
+                disabled={loginStatus.loading}
                 color="primary"
                 style={{ marginTop: '32px' }}
                 onClick={onSubmit('loginViaPassword')}
             >
-                Log in
+                {loginStatus.loading ? (
+                    <ClipLoader size={16} color="#000000" />
+                ) : (
+                    'Log in'
+                )}
             </Button>
             <FootNote>
                 Forgot Password?{' '}
                 <Button
                     color="primary"
+                    disabled={loginStatus.loading}
                     style={{ marginLeft: '12px' }}
                     onClick={onToggleSubMode}
                 >
                     Login Via OTP
                 </Button>
             </FootNote>
+            {registerStatus.success && (
+                <Message style={{ marginTop: '16px' }}>
+                    Registration Successful! Sit tight we are Logging you in.
+                </Message>
+            )}
         </>
     );
 };
 
 const renderLoginViaOtp = ({
     data,
+    getOtpStatus,
+    loginStatus,
     onToggleSubMode,
     onGetOtp,
     onChange,
@@ -111,30 +134,50 @@ const renderLoginViaOtp = ({
                 label="Email"
                 required
                 value={data.email}
+                disabled={getOtpStatus.loading || loginStatus.loading}
                 onChange={onChange('string', 'email')}
             />
             <TextField
                 label="OTP"
                 required
                 value={data.otp}
+                disabled={getOtpStatus.loading || loginStatus.loading}
                 onChange={onChange('string', 'otp')}
             />
+            {getOtpStatus.success && (
+                <Message>OTP sent to above mentioned Email</Message>
+            )}
             <ButtonGroup>
-                <Button variant="outlined" color="secondary" onClick={onGetOtp}>
-                    Get Otp
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    disabled={getOtpStatus.loading || loginStatus.loading}
+                    onClick={onGetOtp}
+                >
+                    {getOtpStatus.loading ? (
+                        <ClipLoader size={16} color="#000000" />
+                    ) : (
+                        'Get Otp'
+                    )}
                 </Button>
                 <Button
                     variant="outlined"
                     color="primary"
+                    disabled={getOtpStatus.loading || loginStatus.loading}
                     onClick={onSubmit('loginViaOtp')}
                 >
-                    Log in
+                    {loginStatus.loading ? (
+                        <ClipLoader size={16} color="#000000" />
+                    ) : (
+                        'Login'
+                    )}
                 </Button>
             </ButtonGroup>
             <FootNote>
                 <Button
                     color="primary"
                     style={{ marginLeft: '12px' }}
+                    disabled={getOtpStatus.loading || loginStatus.loading}
                     onClick={onToggleSubMode}
                 >
                     Login Via Password
@@ -144,25 +187,28 @@ const renderLoginViaOtp = ({
     );
 };
 
-const renderRegister = ({ data, onChange, onSubmit }) => {
+const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
     return (
         <>
             <Title>Register</Title>
             <TextField
                 label="Name"
                 required
+                disabled={registerStatus.loading || registerStatus.success}
                 value={data.name}
                 onChange={onChange('string', 'name')}
             />
             <TextField
                 label="Email"
                 required
+                disabled={registerStatus.loading || registerStatus.success}
                 value={data.email}
                 onChange={onChange('string', 'email')}
             />
             <TextField
                 label="Password"
                 required
+                disabled={registerStatus.loading || registerStatus.success}
                 value={data.password}
                 onChange={onChange('string', 'password')}
                 type="password"
@@ -172,6 +218,7 @@ const renderRegister = ({ data, onChange, onSubmit }) => {
                     format="DD/MM/YYYY"
                     margin="normal"
                     label="Date of Birth *"
+                    disabled={registerStatus.loading || registerStatus.success}
                     value={data.dob ? new Date(Number(data.dob)) : null}
                     onChange={onChange('date', 'dob')}
                 />
@@ -180,6 +227,7 @@ const renderRegister = ({ data, onChange, onSubmit }) => {
                 <InputLabel id="gender">Gender *</InputLabel>
                 <Select
                     labelId="gender"
+                    disabled={registerStatus.loading || registerStatus.success}
                     onChange={onChange('select', 'gender')}
                     value={data.gender}
                 >
@@ -190,11 +238,16 @@ const renderRegister = ({ data, onChange, onSubmit }) => {
             </FormControl>
             <Button
                 variant="outlined"
+                disabled={registerStatus.loading || registerStatus.success}
                 color="primary"
                 style={{ marginTop: '32px' }}
                 onClick={onSubmit('register')}
             >
-                Sign up
+                {registerStatus.loading || registerStatus.success ? (
+                    <ClipLoader size={16} color="#000000" />
+                ) : (
+                    'Sign up'
+                )}
             </Button>
         </>
     );
@@ -204,6 +257,9 @@ const Primary = ({
     mode,
     subMode,
     data,
+    getOtpStatus,
+    loginStatus,
+    registerStatus,
     onToggleSubMode,
     onChange,
     onSubmit,
@@ -215,6 +271,8 @@ const Primary = ({
                 subMode === 'viaPassword' &&
                 renderLoginViaPassword({
                     data: data.loginViaPassword,
+                    loginStatus,
+                    registerStatus,
                     onToggleSubMode,
                     onChange: onChange('loginViaPassword'),
                     onSubmit
@@ -223,6 +281,8 @@ const Primary = ({
                 subMode === 'viaOTP' &&
                 renderLoginViaOtp({
                     data: data.loginViaOtp,
+                    getOtpStatus,
+                    loginStatus,
                     onToggleSubMode,
                     onChange: onChange('loginViaOtp'),
                     onSubmit,
@@ -231,6 +291,7 @@ const Primary = ({
             {mode === 'register' &&
                 renderRegister({
                     data: data.register,
+                    registerStatus,
                     onChange: onChange('register'),
                     onSubmit
                 })}

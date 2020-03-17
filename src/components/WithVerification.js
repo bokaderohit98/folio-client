@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux';
 
 const WithVerification = ({ children }) => {
-    const { user } = useSelector(state => state.user);
+    const { user } = useSelector(state => state);
     if (user && user.verified) return children;
     browserHistory.push('/home');
     return null;
