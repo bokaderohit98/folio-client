@@ -71,7 +71,15 @@ const commonStyle = {
     marginRight: '8px'
 };
 
-const Map = ({ attribute, label, data = [], choices, onChange, signature }) => {
+const Map = ({
+    attribute,
+    label,
+    disabled,
+    data = [],
+    choices,
+    onChange,
+    signature
+}) => {
     let disableAdd = false;
     let key1 = '';
     let key2 = '';
@@ -101,6 +109,7 @@ const Map = ({ attribute, label, data = [], choices, onChange, signature }) => {
                             className="key"
                             style={commonStyle}
                             value={item[key1]}
+                            disabled={disabled}
                             onChange={handleSelectChange(index)}
                         >
                             {choices.map(choice => (
@@ -113,9 +122,11 @@ const Map = ({ attribute, label, data = [], choices, onChange, signature }) => {
                             style={commonStyle}
                             className="value"
                             value={item[key2]}
+                            disabled={disabled}
                             onChange={handleTextChange(index)}
                         />
                         <IconButton
+                            disabled={disabled}
                             onClick={() =>
                                 onChange('map', attribute, 'remove')(index)
                             }
@@ -125,11 +136,13 @@ const Map = ({ attribute, label, data = [], choices, onChange, signature }) => {
                     </HandleContainer>
                 ))}
                 <Button
-                    disabled={disableAdd}
+                    disabled={disableAdd || disabled}
                     variant="contained"
                     color="primary"
                     style={{ width: 'fit-content' }}
-                    onClick={() => onChange('map', attribute, 'add')(signature)}
+                    onClick={() =>
+                        onChange('map', attribute, 'add')({ ...signature })
+                    }
                 >
                     <i className="material-icons">add</i>
                 </Button>

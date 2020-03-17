@@ -2,9 +2,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@material-ui/core';
+import { connect } from 'react-redux';
 import avatar from '../../assets/avatarFemale.png';
 import Edit from './Edit';
 import { capitalize } from '../../utils/string';
+import { updateInfo } from '../../redux/actions';
 
 const Container = styled.div`
     display: flex;
@@ -39,10 +41,9 @@ const Head = styled.div`
 class Settings extends React.Component {
     constructor(props) {
         super(props);
-        const { data: user } = this.props;
+        const { user } = this.props;
         this.state = {
-            user,
-            name: user.name
+            user: { ...user }
         };
     }
 
@@ -76,24 +77,23 @@ class Settings extends React.Component {
 
     handleUpdate = () => {
         const { user } = this.state;
-        const updated = { ...user };
-        delete updated.education;
-        delete updated.work;
-        delete updated.achivement;
-        console.log(updated);
+        const { updateInfo } = this.props;
+        updateInfo(user);
     };
 
     render() {
-        const { user, name } = this.state;
+        const { user: instance } = this.state;
+        const { loading, user } = this.props;
 
         return (
             <Container>
                 <Head>
                     <Avatar src={avatar} />
-                    <p>{capitalize(name)}</p>
+                    <p>{capitalize(user.name)}</p>
                 </Head>
                 <Edit
-                    data={user}
+                    data={instance}
+                    loading={loading}
                     onChange={this.handleChange}
                     onUpdate={this.handleUpdate}
                 />
@@ -102,4 +102,12 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings;
+const mapStateToProps = state => ({
+    user: state.user,
+    loading: state.updateInfoLoading,
+    error: state.updaeInfoError
+});
+
+const mapDispatchToProps = { updateInfo };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

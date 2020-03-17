@@ -39,6 +39,31 @@ export const getUser = () => dispatch => {
         );
 };
 
+export const updateInfo = data => dispatch => {
+    dispatch({
+        type: actionsType.UPDATE_INFO_BEGIN
+    });
+
+    axios
+        .put(apiRoutes.updateInfo, data)
+        .then(res =>
+            dispatch({
+                type: actionsType.UPDATE_INFO_SUCCESS,
+                payload: {
+                    user: res.data
+                }
+            })
+        )
+        .catch(err =>
+            dispatch({
+                type: actionsType.UPDATE_INFO_ERROR,
+                payload: {
+                    error: err.response.data.error
+                }
+            })
+        );
+};
+
 export const createEntity = (
     requestType,
     entityType,

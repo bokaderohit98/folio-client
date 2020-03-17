@@ -107,6 +107,7 @@ export default ({ data, entity, loading, onChange }) => {
                         key={name}
                         attribute={name}
                         label={capitalize(name)}
+                        disabled={loading}
                         data={data[name]}
                         onChange={onChange}
                         choices={choices}

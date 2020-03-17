@@ -2,13 +2,15 @@ import actionsType from './actionsType';
 
 const initialState = {
     user: {},
+    educations: [],
+    works: [],
+    achivements: [],
     userLoading: false,
     userError: false,
     createEntityLoading: false,
     createEntityError: false,
-    educations: [],
-    works: [],
-    achivements: []
+    updateInfoLoading: false,
+    updateInfoError: false
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -63,6 +65,27 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 [`${payload.entityType}s`]: [
                     ...state[`${payload.entityType}s`]
                 ].filter(item => item._id !== payload.id)
+            };
+
+        case actionsType.UPDATE_INFO_BEGIN:
+            return {
+                ...state,
+                updateInfoLoading: true,
+                updateInfoError: false
+            };
+
+        case actionsType.UPDATE_INFO_ERROR:
+            return {
+                ...state,
+                updateInfoLoading: false,
+                updateInfoError: payload.error
+            };
+
+        case actionsType.UPDATE_INFO_SUCCESS:
+            return {
+                ...state,
+                updateInfoLoading: false,
+                user: payload.user
             };
         default:
             return { ...state };
