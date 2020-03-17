@@ -56,6 +56,14 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 createEntityLoading: false,
                 createEntityError: true
             };
+
+        case actionsType.DELETE_ENTITY_SUCCESS:
+            return {
+                ...state,
+                [`${payload.entityType}s`]: [
+                    ...state[`${payload.entityType}s`]
+                ].filter(item => item._id !== payload.id)
+            };
         default:
             return { ...state };
     }

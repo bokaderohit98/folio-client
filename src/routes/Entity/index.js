@@ -1,7 +1,7 @@
 import React from 'react';
 import { Fab } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { createEntity } from '../../redux/actions';
+import { createEntity, deleteEntity } from '../../redux/actions';
 
 import Empty from './Empty';
 import Listing from './Listing';
@@ -58,8 +58,9 @@ class Entity extends React.Component {
     };
 
     handleDelete = () => {
-        const { menuData } = this.state;
-        console.log(menuData.data);
+        const { instance } = this.state;
+        const { type, deleteEntity } = this.props;
+        deleteEntity(type, instance);
         this.handleToggleModal('delete')();
     };
 
@@ -156,6 +157,6 @@ const mapStateToProps = state => ({
     createEntityError: state.createEntityError
 });
 
-const mapDispatchToProps = { createEntity };
+const mapDispatchToProps = { createEntity, deleteEntity };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Entity);

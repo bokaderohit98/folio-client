@@ -76,4 +76,22 @@ export const createEntity = (
         );
 };
 
+export const deleteEntity = (entityType, data) => dispatch => {
+    dispatch({
+        type: actionsType.DELETE_ENTITY_SUCCESS,
+        payload: {
+            entityType,
+            id: data._id
+        }
+    });
+    axios.delete(apiRoutes.deleteEntity(entityType, data._id)).catch(err =>
+        dispatch({
+            type: actionsType.DELETE_ENTITY_ERROR,
+            payload: {
+                error: err.response.data.error
+            }
+        })
+    );
+};
+
 export default { getUser };
