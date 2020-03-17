@@ -39,21 +39,24 @@ export const getUser = () => dispatch => {
         );
 };
 
-export const updateInfo = data => dispatch => {
+export const updateInfo = (data, onSuccess) => dispatch => {
     dispatch({
         type: actionsType.UPDATE_INFO_BEGIN
     });
 
     axios
         .put(apiRoutes.updateInfo, data)
-        .then(res =>
-            dispatch({
+        .then(res => {
+            if (onSuccess) {
+                onSuccess();
+            }
+            return dispatch({
                 type: actionsType.UPDATE_INFO_SUCCESS,
                 payload: {
                     user: res.data
                 }
-            })
-        )
+            });
+        })
         .catch(err =>
             dispatch({
                 type: actionsType.UPDATE_INFO_ERROR,

@@ -1,9 +1,15 @@
 import React from 'react';
-import { grey, blue } from '@material-ui/core/colors';
-import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import styled from 'styled-components';
+import {
+    Button,
+    MuiThemeProvider,
+    createMuiTheme,
+    TextField
+} from '@material-ui/core';
+import { red, grey } from '@material-ui/core/colors';
 import ClipLoader from 'react-spinners/ClipLoader';
 
-import { Overlay } from '../../components';
+import Overlay from '../../components/Overlay';
 import {
     Container,
     Main,
@@ -11,25 +17,30 @@ import {
     Action
 } from '../../components/ModalContainers';
 
-import makeFormFields from '../../utils/makeFormFields';
+const InputContainer = styled.div`
+    margin-top: 16px;
 
-const CreateModal = ({
+    .MuiFormControl-root {
+        width: 100%;
+    }
+
+    .MuiOutlinedInput-input {
+        padding: 8px 16px;
+        color: ${props => props.theme.palette.text.primary};
+    }
+`;
+
+const PasswordChangeModal = ({
     show,
-    type,
     data,
-    entity,
-    loading,
-    onClose,
-    onSuccess,
-    onChange
+    disabled,
+    onChange,
+    onUpdate,
+    onClose
 }) => {
     const theme = createMuiTheme({
-        palette: {
-            primary: blue,
-            secondary: grey
-        }
+        palette: { primary: red, secondary: grey }
     });
-
     return (
         show && (
             <>
@@ -38,28 +49,27 @@ const CreateModal = ({
                     <Main>
                         <Title
                             style={{
-                                marginBottom: '20px',
                                 justifyContent: 'center',
                                 display: 'flex'
                             }}
                         >
-                            {`${
-                                type === 'create' ? 'ADD NEW' : 'EDIT'
-                            } ${entity.toUpperCase()}`}
+                            Change Password
                         </Title>
-                        {makeFormFields({
-                            type,
-                            data,
-                            entity,
-                            loading,
-                            onChange
-                        })}
+                        <InputContainer>
+                            <TextField
+                                type="password"
+                                variant="outlined"
+                                disabled={disabled}
+                                value={data}
+                                onChange={onChange}
+                            />
+                        </InputContainer>
                         <MuiThemeProvider theme={theme}>
                             <Action>
                                 <Button
                                     variant="contained"
                                     color="secondary"
-                                    disabled={loading}
+                                    disabled={disabled}
                                     onClick={onClose}
                                 >
                                     Cancel
@@ -67,14 +77,12 @@ const CreateModal = ({
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    disabled={loading}
-                                    style={{ marginLeft: '4px' }}
-                                    onClick={onSuccess}
+                                    style={{ marginLeft: '8px' }}
+                                    disabled={disabled}
+                                    onClick={onUpdate}
                                 >
-                                    {loading ? (
+                                    {disabled ? (
                                         <ClipLoader size={16} color="#ffffff" />
-                                    ) : type === 'create' ? (
-                                        'Add'
                                     ) : (
                                         'Update'
                                     )}
@@ -88,4 +96,4 @@ const CreateModal = ({
     );
 };
 
-export default CreateModal;
+export default PasswordChangeModal;

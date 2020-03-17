@@ -1,12 +1,13 @@
 /* eslint-disable no-case-declarations */
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar } from '@material-ui/core';
+import { Avatar, IconButton } from '@material-ui/core';
 import { connect } from 'react-redux';
 import avatar from '../../assets/avatarFemale.png';
 import Edit from './Edit';
 import { capitalize } from '../../utils/string';
 import { updateInfo } from '../../redux/actions';
+import PasswordChangeModal from './PasswordChangeModal';
 
 const Container = styled.div`
     display: flex;
@@ -15,6 +16,14 @@ const Container = styled.div`
     height: 100vh;
     background: ${props => props.theme.palette.background.paper};
     color: ${props => props.theme.palette.text.primary};
+`;
+
+const PasswordButtonContainer = styled.div`
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    justify-content: flex-end;
+    box-sizing: border-box;
 `;
 
 const Head = styled.div`
@@ -43,7 +52,9 @@ class Settings extends React.Component {
         super(props);
         const { user } = this.props;
         this.state = {
-            user: { ...user }
+            user: { ...user },
+            showPasswordChangeModal: false,
+            password: ''
         };
     }
 
@@ -81,12 +92,40 @@ class Settings extends React.Component {
         updateInfo(user);
     };
 
+    togglePasswordChangeModal = () => {
+        const { showPasswordChangeModal } = this.state;
+        this.setState({
+            showPasswordChangeModal: !showPasswordChangeModal
+        });
+    };
+
+    handlePasswordChange = event => {
+        this.setState({
+            password: event.target.value
+        });
+    };
+
+    handlePasswordUpdate = () => {
+        const { password } = this.state;
+        const { updateInfo } = this.props;
+        updateInfo({ password }, this.togglePasswordChangeModal);
+    };
+
     render() {
-        const { user: instance } = this.state;
+        const {
+            user: instance,
+            showPasswordChangeModal,
+            password
+        } = this.state;
         const { loading, user } = this.props;
 
         return (
             <Container>
+                <PasswordButtonContainer>
+                    <IconButton onClick={this.togglePasswordChangeModal}>
+                        <i className="material-icons">lock</i>
+                    </IconButton>
+                </PasswordButtonContainer>
                 <Head>
                     <Avatar src={avatar} />
                     <p>{capitalize(user.name)}</p>
@@ -96,6 +135,14 @@ class Settings extends React.Component {
                     loading={loading}
                     onChange={this.handleChange}
                     onUpdate={this.handleUpdate}
+                />
+                <PasswordChangeModal
+                    show={showPasswordChangeModal}
+                    data={password}
+                    disabled={loading}
+                    onChange={this.handlePasswordChange}
+                    onUpdate={this.handlePasswordUpdate}
+                    onClose={this.togglePasswordChangeModal}
                 />
             </Container>
         );
