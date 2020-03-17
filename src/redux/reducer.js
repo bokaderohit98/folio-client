@@ -4,6 +4,8 @@ const initialState = {
     user: {},
     userLoading: false,
     userError: false,
+    createEntityLoading: false,
+    createEntityError: false,
     educations: [],
     works: [],
     achivements: []
@@ -34,6 +36,26 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 userError: payload.error
             };
 
+        case actionsType.CREATE_ENTITY_BEGIN:
+            return {
+                ...state,
+                createEntityLoading: true,
+                createEntityError: false
+            };
+
+        case actionsType.CREATE_ENTITY_SUCCESS:
+            return {
+                ...state,
+                createEntityLoading: false,
+                [`${payload.entityType}s`]: payload.data
+            };
+
+        case actionsType.CREATE_ENTITY_ERROR:
+            return {
+                ...state,
+                createEntityLoading: false,
+                createEntityError: true
+            };
         default:
             return { ...state };
     }

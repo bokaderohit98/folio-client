@@ -1,18 +1,18 @@
 import React from 'react';
 import { Fab } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { createEntity } from '../../redux/actions';
+
 import Empty from './Empty';
 import Listing from './Listing';
 import ListingMenu from './ListingMenu';
 import CreateModal from './CreateModal';
 import DeleteModal from './DeleteModal';
 
-class Work extends React.Component {
+class Entity extends React.Component {
     constructor(props) {
         super(props);
-        const { data, type } = this.props;
         this.state = {
-            type,
-            data,
             anchorPosition: null,
             instance: {},
             showModal: {
@@ -65,8 +65,8 @@ class Work extends React.Component {
 
     handleCreate = () => {
         const { instance } = this.state;
-        console.log(instance);
-        this.handleToggleModal('create')();
+        const { createEntity, type } = this.props;
+        createEntity(type, instance, this.handleToggleModal('create'));
     };
 
     handleEdit = () => {
@@ -76,7 +76,8 @@ class Work extends React.Component {
     };
 
     render() {
-        const { showModal, data, type, instance, anchorPosition } = this.state;
+        const { showModal, instance, anchorPosition } = this.state;
+        const { data, type, createEntityLoading } = this.props;
         const entityData = data[type];
 
         return (
@@ -126,6 +127,7 @@ class Work extends React.Component {
                     entity={type}
                     type="create"
                     data={instance}
+                    loading={createEntityLoading}
                     onClose={this.handleToggleModal('create')}
                     onSuccess={this.handleCreate}
                     onChange={this.handleChange}
@@ -144,4 +146,16 @@ class Work extends React.Component {
     }
 }
 
-export default Work;
+const mapStateToProps = state => ({
+    data: {
+        education: state.educations,
+        work: state.works,
+        achivement: state.achivements
+    },
+    createEntityLoading: state.createEntityLoading,
+    createEntityError: state.createEntityError
+});
+
+const mapDispatchToProps = { createEntity };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Entity);

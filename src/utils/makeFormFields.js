@@ -37,7 +37,7 @@ const Container = styled.div`
     }
 `;
 
-export default ({ data, entity, onChange }) => {
+export default ({ data, entity, loading, onChange }) => {
     const fields = dataFields[entity];
 
     const form = fields.map(({ name, required, type, choices, signature }) => {
@@ -47,6 +47,7 @@ export default ({ data, entity, onChange }) => {
                     <TextField
                         required={required}
                         label={capitalize(name)}
+                        disabled={loading}
                         key={name}
                         value={data[name] || ''}
                         onChange={onChange(type, name)}
@@ -58,6 +59,7 @@ export default ({ data, entity, onChange }) => {
                         required={required}
                         label={capitalize(name)}
                         key={name}
+                        disabled={loading}
                         multiline
                         rows={4}
                         value={data[name] || ''}
@@ -69,6 +71,7 @@ export default ({ data, entity, onChange }) => {
                     <MuiPickersUtilsProvider utils={MomentUtils} key={name}>
                         <KeyboardDatePicker
                             format="DD/MM/YYYY"
+                            disabled={loading}
                             margin="normal"
                             label={`${capitalize(name)} *`}
                             onChange={onChange(type, name)}
@@ -87,6 +90,7 @@ export default ({ data, entity, onChange }) => {
                         <Select
                             labelId={name}
                             value={data[name]}
+                            disabled={loading}
                             onChange={onChange(type, name)}
                         >
                             {choices.map(choice => (

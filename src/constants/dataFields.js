@@ -13,7 +13,7 @@ export default {
         { name: 'position', type: 'string', required: true }
     ],
     achivement: [
-        { name: 'year', type: 'date', required: true },
+        { name: 'date', type: 'date', required: true },
         { name: 'title', type: 'string', required: true },
         { name: 'description', type: 'long-string', required: false }
     ],

@@ -29,14 +29,41 @@ export const getUser = () => dispatch => {
                 }
             });
         })
-        .catch(err => {
+        .catch(err =>
             dispatch({
                 type: actionsType.FETCH_USER_ERROR,
                 payload: {
                     error: err.response.data.error
                 }
+            })
+        );
+};
+
+export const createEntity = (entityType, data, successHandler) => dispatch => {
+    dispatch({
+        type: actionsType.CREATE_ENTITY_BEGIN
+    });
+
+    axios
+        .post(apiRoutes.createEntity(entityType), data)
+        .then(res => {
+            successHandler();
+            return dispatch({
+                type: actionsType.CREATE_ENTITY_SUCCESS,
+                payload: {
+                    entityType,
+                    data: res.data
+                }
             });
-        });
+        })
+        .catch(err =>
+            dispatch({
+                type: actionsType.CREATE_ENTITY_ERROR,
+                payload: {
+                    error: err.response.data.error
+                }
+            })
+        );
 };
 
 export default { getUser };

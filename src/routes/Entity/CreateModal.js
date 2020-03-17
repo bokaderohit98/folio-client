@@ -1,6 +1,7 @@
 import React from 'react';
 import { grey, blue } from '@material-ui/core/colors';
 import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 import { Overlay } from '../../components';
 import { Container, Main, Title, Action } from './modalContainers';
@@ -12,6 +13,7 @@ const CreateModal = ({
     type,
     data,
     entity,
+    loading,
     onClose,
     onSuccess,
     onChange
@@ -40,12 +42,19 @@ const CreateModal = ({
                                 type === 'create' ? 'ADD NEW' : 'EDIT'
                             } ${entity.toUpperCase()}`}
                         </Title>
-                        {makeFormFields({ type, data, entity, onChange })}
+                        {makeFormFields({
+                            type,
+                            data,
+                            entity,
+                            loading,
+                            onChange
+                        })}
                         <MuiThemeProvider theme={theme}>
                             <Action>
                                 <Button
                                     variant="contained"
                                     color="secondary"
+                                    disabled={loading}
                                     onClick={onClose}
                                 >
                                     Cancel
@@ -53,10 +62,17 @@ const CreateModal = ({
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    disabled={loading}
                                     style={{ marginLeft: '4px' }}
                                     onClick={onSuccess}
                                 >
-                                    {type === 'create' ? 'Add' : 'Update'}
+                                    {loading ? (
+                                        <ClipLoader size={16} color="#ffffff" />
+                                    ) : type === 'create' ? (
+                                        'Add'
+                                    ) : (
+                                        'Update'
+                                    )}
                                 </Button>
                             </Action>
                         </MuiThemeProvider>
