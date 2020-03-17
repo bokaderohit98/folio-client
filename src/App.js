@@ -4,7 +4,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { Switch, Route, useHistory } from 'react-router-dom';
 
 import routes from './constants/routes';
-import { Sidebar, WithAuth } from './components';
+import { Sidebar, WithAuth, WithVerification } from './components';
 import { Authentication } from './routes';
 import ThemeService from './utils/themeService';
 import AuthService from './utils/authService';
@@ -19,19 +19,30 @@ const Container = styled.div`
 `;
 
 const makeRoutes = ({ darkMode, setDarkMode }) => {
-    return routes.map(({ path, Component, exact, props }) => (
-        <Route path={path} exact={exact} key={path}>
-            <WithAuth>
-                <Sidebar
-                    darkMode={darkMode}
-                    toggleDarkMode={() => setDarkMode(!darkMode)}
-                />
-                <Container>
-                    <Component {...props} />
-                </Container>
-            </WithAuth>
-        </Route>
-    ));
+    return routes.map(
+        ({ path, Component, exact, verificationRequired, props }) => {
+            const link = (
+                <WithAuth>
+                    <Sidebar
+                        darkMode={darkMode}
+                        toggleDarkMode={() => setDarkMode(!darkMode)}
+                    />
+                    <Container>
+                        <Component {...props} />
+                    </Container>
+                </WithAuth>
+            );
+            return (
+                <Route path={path} exact={exact} key={path}>
+                    {verificationRequired ? (
+                        <WithVerification>{link}</WithVerification>
+                    ) : (
+                        link
+                    )}
+                </Route>
+            );
+        }
+    );
 };
 
 const App = () => {

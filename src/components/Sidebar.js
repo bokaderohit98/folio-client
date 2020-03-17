@@ -82,11 +82,11 @@ const OtherLink = styled.div`
 const makeMenu = verified => {
     return routes
         .filter(({ listedOnSidebar }) => listedOnSidebar)
-        .map(({ title, path }) => (
+        .map(({ title, path, verificationRequired }) => (
             <RouteLink
                 to={path}
                 key={title}
-                className={title !== 'Home' && !verified && 'disabled'}
+                className={verificationRequired && !verified && 'disabled'}
             >
                 {title}
             </RouteLink>
