@@ -39,13 +39,23 @@ export const getUser = () => dispatch => {
         );
 };
 
-export const createEntity = (entityType, data, successHandler) => dispatch => {
+export const createEntity = (
+    requestType,
+    entityType,
+    data,
+    successHandler
+) => dispatch => {
     dispatch({
         type: actionsType.CREATE_ENTITY_BEGIN
     });
 
-    axios
-        .post(apiRoutes.createEntity(entityType), data)
+    let request = null;
+
+    if (requestType === 'edit')
+        request = axios.put(apiRoutes.createEntity(entityType, data._id), data);
+    else request = axios.post(apiRoutes.createEntity(entityType), data);
+
+    request
         .then(res => {
             successHandler();
             return dispatch({

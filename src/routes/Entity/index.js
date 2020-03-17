@@ -63,16 +63,15 @@ class Entity extends React.Component {
         this.handleToggleModal('delete')();
     };
 
-    handleCreate = () => {
+    handleCreateEdit = requestType => () => {
         const { instance } = this.state;
         const { createEntity, type } = this.props;
-        createEntity(type, instance, this.handleToggleModal('create'));
-    };
-
-    handleEdit = () => {
-        const { instance } = this.state;
-        console.log(instance);
-        this.handleToggleModal('edit')();
+        createEntity(
+            requestType,
+            type,
+            instance,
+            this.handleToggleModal(requestType)
+        );
     };
 
     render() {
@@ -100,7 +99,7 @@ class Entity extends React.Component {
                 )}
                 {(!entityData || entityData.length === 0) && (
                     <Empty
-                        actionText="Add Work"
+                        actionText={`add ${type}`}
                         action={this.handleToggleModal('create')}
                     />
                 )}
@@ -129,7 +128,7 @@ class Entity extends React.Component {
                     data={instance}
                     loading={createEntityLoading}
                     onClose={this.handleToggleModal('create')}
-                    onSuccess={this.handleCreate}
+                    onSuccess={this.handleCreateEdit('create')}
                     onChange={this.handleChange}
                 />
                 <CreateModal
@@ -137,8 +136,9 @@ class Entity extends React.Component {
                     entity={type}
                     type="edit"
                     data={instance}
+                    loading={createEntityLoading}
                     onClose={this.handleToggleModal('edit')}
-                    onSuccess={this.handleEdit}
+                    onSuccess={this.handleCreateEdit('edit')}
                     onChange={this.handleChange}
                 />
             </>
