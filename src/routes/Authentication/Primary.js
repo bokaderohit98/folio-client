@@ -6,7 +6,8 @@ import {
     FormControl,
     InputLabel,
     Select,
-    MenuItem
+    MenuItem,
+    FormHelperText
 } from '@material-ui/core';
 import {
     KeyboardDatePicker,
@@ -63,6 +64,7 @@ const renderLoginViaPassword = ({
     data,
     loginStatus,
     registerStatus,
+    error,
     onToggleSubMode,
     onChange,
     onSubmit
@@ -75,6 +77,8 @@ const renderLoginViaPassword = ({
                 required
                 disabled={loginStatus.loading}
                 value={data.email}
+                error={error.email && error.email.status}
+                helperText={error.email && error.email.message}
                 onChange={onChange('string', 'email')}
             />
             <TextField
@@ -82,6 +86,8 @@ const renderLoginViaPassword = ({
                 required
                 disabled={loginStatus.loading}
                 value={data.password}
+                error={error.password && error.password.status}
+                helperText={error.password && error.password.message}
                 onChange={onChange('string', 'password')}
                 type="password"
             />
@@ -122,6 +128,7 @@ const renderLoginViaOtp = ({
     data,
     getOtpStatus,
     loginStatus,
+    error,
     onToggleSubMode,
     onGetOtp,
     onChange,
@@ -134,6 +141,8 @@ const renderLoginViaOtp = ({
                 label="Email"
                 required
                 value={data.email}
+                error={error.email && error.email.status}
+                helperText={error.email && error.email.message}
                 disabled={getOtpStatus.loading || loginStatus.loading}
                 onChange={onChange('string', 'email')}
             />
@@ -141,6 +150,8 @@ const renderLoginViaOtp = ({
                 label="OTP"
                 required
                 value={data.otp}
+                error={error.otp && error.otp.status}
+                helperText={error.otp && error.otp.message}
                 disabled={getOtpStatus.loading || loginStatus.loading}
                 onChange={onChange('string', 'otp')}
             />
@@ -187,7 +198,13 @@ const renderLoginViaOtp = ({
     );
 };
 
-const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
+const renderRegister = ({
+    data,
+    registerStatus,
+    error,
+    onChange,
+    onSubmit
+}) => {
     return (
         <>
             <Title>Register</Title>
@@ -196,6 +213,8 @@ const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
                 required
                 disabled={registerStatus.loading || registerStatus.success}
                 value={data.name}
+                error={error.name && error.name.status}
+                helperText={error.name && error.name.message}
                 onChange={onChange('string', 'name')}
             />
             <TextField
@@ -203,6 +222,8 @@ const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
                 required
                 disabled={registerStatus.loading || registerStatus.success}
                 value={data.email}
+                error={error.email && error.email.status}
+                helperText={error.email && error.email.message}
                 onChange={onChange('string', 'email')}
             />
             <TextField
@@ -210,6 +231,8 @@ const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
                 required
                 disabled={registerStatus.loading || registerStatus.success}
                 value={data.password}
+                error={error.password && error.password.status}
+                helperText={error.password && error.password.message}
                 onChange={onChange('string', 'password')}
                 type="password"
             />
@@ -220,10 +243,12 @@ const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
                     label="Date of Birth *"
                     disabled={registerStatus.loading || registerStatus.success}
                     value={data.dob ? new Date(Number(data.dob)) : null}
+                    error={error.dob && error.dob.status}
+                    helperText={error.dob && error.dob.message}
                     onChange={onChange('date', 'dob')}
                 />
             </MuiPickersUtilsProvider>
-            <FormControl>
+            <FormControl error={error.gender && error.gender.status}>
                 <InputLabel id="gender">Gender *</InputLabel>
                 <Select
                     labelId="gender"
@@ -235,6 +260,9 @@ const renderRegister = ({ data, registerStatus, onChange, onSubmit }) => {
                     <MenuItem value="female">Female</MenuItem>
                     <MenuItem value="other">Other</MenuItem>
                 </Select>
+                {error.gender && error.gender.status && (
+                    <FormHelperText> {error.gender.message}</FormHelperText>
+                )}
             </FormControl>
             <Button
                 variant="outlined"
@@ -260,6 +288,7 @@ const Primary = ({
     getOtpStatus,
     loginStatus,
     registerStatus,
+    error,
     onToggleSubMode,
     onChange,
     onSubmit,
@@ -273,6 +302,7 @@ const Primary = ({
                     data: data.loginViaPassword,
                     loginStatus,
                     registerStatus,
+                    error,
                     onToggleSubMode,
                     onChange: onChange('loginViaPassword'),
                     onSubmit
@@ -283,6 +313,7 @@ const Primary = ({
                     data: data.loginViaOtp,
                     getOtpStatus,
                     loginStatus,
+                    error,
                     onToggleSubMode,
                     onChange: onChange('loginViaOtp'),
                     onSubmit,
@@ -292,6 +323,7 @@ const Primary = ({
                 renderRegister({
                     data: data.register,
                     registerStatus,
+                    error,
                     onChange: onChange('register'),
                     onSubmit
                 })}

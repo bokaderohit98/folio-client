@@ -1,9 +1,11 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styled from 'styled-components';
 import Primary from './Primary';
 import Secondary from './Secondary';
 
 import api from '../../api';
+import dataFields from '../../constants/dataFields';
 
 const Container = styled.div`
     display: flex;
@@ -118,20 +120,23 @@ class Authentication extends React.Component {
             loading: false,
             error: false,
             success: false
-        }
+        },
+        error: {}
     };
 
     handleToggleMode = () => {
         const { mode } = this.state;
         this.setState({
-            mode: mode === 'login' ? 'register' : 'login'
+            mode: mode === 'login' ? 'register' : 'login',
+            error: {}
         });
     };
 
     handleToggleSubMode = () => {
         const { subMode } = this.state;
         this.setState({
-            subMode: subMode === 'viaPassword' ? 'viaOTP' : 'viaPassword'
+            subMode: subMode === 'viaPassword' ? 'viaOTP' : 'viaPassword',
+            error: {}
         });
     };
 
@@ -150,6 +155,16 @@ class Authentication extends React.Component {
 
     handleGetOtp = () => {
         const { data, getOtpStatus } = this.state;
+
+        const error = {};
+        error.email = dataFields.loginViaOtp[0].validation(
+            data.loginViaOtp.email
+        );
+
+        this.setState({ error });
+
+        if (error.email.status) return;
+
         this.setState({
             getOtpStatus: {
                 ...getOtpStatus,
@@ -179,7 +194,24 @@ class Authentication extends React.Component {
         );
     };
 
+    handleValidation = type => {
+        const fields = dataFields[type];
+        let data = this.state.data[type];
+        const error = {};
+
+        fields.forEach(({ name, validation }) => {
+            error[name] = validation(data[name]);
+        });
+
+        this.setState({ error });
+
+        const status = Object.keys(error).some(key => error[key].status);
+        return status;
+    };
+
     handleSubmit = type => () => {
+        if (this.handleValidation(type)) return true;
+
         const { data } = this.state;
 
         const onSuccessRegister = credentials =>
@@ -280,7 +312,8 @@ class Authentication extends React.Component {
             data,
             getOtpStatus,
             loginStatus,
-            registerStatus
+            registerStatus,
+            error
         } = this.state;
 
         return (
@@ -293,6 +326,7 @@ class Authentication extends React.Component {
                         getOtpStatus={getOtpStatus}
                         loginStatus={loginStatus}
                         registerStatus={registerStatus}
+                        error={error}
                         onToggleSubMode={this.handleToggleSubMode}
                         onChange={this.handleChange}
                         onSubmit={this.handleSubmit}

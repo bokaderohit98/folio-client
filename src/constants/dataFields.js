@@ -1,3 +1,5 @@
+import validations from '../utils/validations';
+
 export default {
     education: [
         { name: 'from', type: 'date', required: true },
@@ -45,24 +47,65 @@ export default {
             signature: { type: '', handle: '' }
         }
     ],
-    login: [
-        { name: 'email', type: 'string', required: true },
-        { name: 'password', type: 'password', required: true }
-    ],
     register: [
-        { name: 'name', type: 'string', required: true },
-        { name: 'email', type: 'string', required: true },
-        { name: 'password', type: 'password', required: true },
+        {
+            name: 'name',
+            type: 'string',
+            required: true,
+            validation: validations.string(8)
+        },
+        {
+            name: 'email',
+            type: 'string',
+            required: true,
+            validation: validations.email
+        },
+        {
+            name: 'password',
+            type: 'password',
+            required: true,
+            validation: validations.password
+        },
         {
             name: 'gender',
             type: 'select',
             required: true,
-            choices: ['male', 'female', 'other']
+            choices: ['male', 'female', 'other'],
+            validation: validations.select
         },
-        { name: 'dob', type: 'date', required: true }
+        {
+            name: 'dob',
+            type: 'date',
+            required: true,
+            validation: validations.date
+        }
     ],
-    loginOtp: [
-        { name: 'email', type: 'string', required: true },
-        { name: 'otp', type: 'string', required: true }
+    loginViaPassword: [
+        {
+            name: 'email',
+            type: 'string',
+            required: true,
+            validation: validations.email
+        },
+        {
+            name: 'password',
+            type: 'password',
+            required: true,
+            validation: validations.password
+        }
+    ],
+    loginViaOtp: [
+        {
+            name: 'email',
+            type: 'string',
+            required: true,
+            validation: validations.email
+        },
+        {
+            name: 'otp',
+            type: 'string',
+            required: true,
+            validation: validations.otp
+        }
     ]
 };
