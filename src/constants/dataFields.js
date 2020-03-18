@@ -109,7 +109,7 @@ export default {
             name: 'name',
             type: 'string',
             required: true,
-            validation: validations.string(8)
+            validation: validations.string(3)
         },
         {
             name: 'email',

@@ -62,7 +62,8 @@ class Settings extends React.Component {
     }
 
     handleChange = (type, attribute, operation) => event => {
-        const { user } = this.state;
+        const { user, error } = this.state;
+        const updatedError = { ...error };
         const updated = { ...user };
 
         switch (type) {
@@ -87,7 +88,8 @@ class Settings extends React.Component {
                 updated[attribute] = event.target.value;
         }
 
-        this.setState({ user: updated });
+        updatedError[attribute] = {};
+        this.setState({ user: updated, error: updatedError });
     };
 
     handleValidations = () => {

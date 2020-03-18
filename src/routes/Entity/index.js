@@ -9,7 +9,6 @@ import ListingMenu from './ListingMenu';
 import CreateModal from './CreateModal';
 import DeleteModal from './DeleteModal';
 import dataFields from '../../constants/dataFields';
-import validations from '../../utils/validations';
 
 class Entity extends React.Component {
     constructor(props) {
@@ -50,14 +49,16 @@ class Entity extends React.Component {
     };
 
     handleChange = (type, attribute) => event => {
-        const { instance } = this.state;
+        const { instance, error } = this.state;
+        const updatedError = { ...error };
         const updated = { ...instance };
         if (type === 'string' || type === 'long-string') {
             const { value } = event.target;
             updated[attribute] = value;
         } else if (type === 'date') updated[attribute] = event.valueOf();
 
-        this.setState({ instance: updated });
+        updatedError[attribute] = {};
+        this.setState({ instance: updated, error: updatedError });
     };
 
     handleDelete = () => {

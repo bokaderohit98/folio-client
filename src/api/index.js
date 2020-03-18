@@ -47,7 +47,10 @@ const getOtp = (data, onSuccess, onFailure) => {
     axios
         .post(routes.getOtp, data)
         .then(() => onSuccess())
-        .catch(() => onFailure());
+        .catch(err => {
+            const error = err.response.data;
+            onFailure(error);
+        });
 };
 
 export default {

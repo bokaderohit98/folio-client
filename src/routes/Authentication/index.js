@@ -141,7 +141,9 @@ class Authentication extends React.Component {
     };
 
     handleChange = entity => (type, attribute) => event => {
-        const { data } = this.state;
+        const fields = dataFields[entity];
+        const { data, error } = this.state;
+        const updatedError = { ...error };
         const updatedData = { ...data };
 
         if (type === 'string')
@@ -150,7 +152,9 @@ class Authentication extends React.Component {
             updatedData[entity][attribute] = event.valueOf();
         else if (type === 'select')
             updatedData[entity][attribute] = event.target.value;
-        this.setState({ data: updatedData });
+
+        updatedError[attribute] = {};
+        this.setState({ data: updatedData, error: updatedError });
     };
 
     handleGetOtp = () => {
@@ -183,13 +187,14 @@ class Authentication extends React.Component {
                         success: true
                     }
                 }),
-            () =>
+            error =>
                 this.setState({
                     getOtpStatus: {
                         ...getOtpStatus,
                         loading: false,
                         error: true
-                    }
+                    },
+                    error
                 })
         );
     };
@@ -203,14 +208,14 @@ class Authentication extends React.Component {
             error[name] = validation(data[name]);
         });
 
+        const status = Object.keys(error).some(key => error[key].status);
         this.setState({ error });
 
-        const status = Object.keys(error).some(key => error[key].status);
         return status;
     };
 
     handleSubmit = type => () => {
-        if (this.handleValidation(type)) return true;
+        if (this.handleValidation(type)) return;
 
         const { data } = this.state;
 
