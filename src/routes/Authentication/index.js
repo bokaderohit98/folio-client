@@ -236,17 +236,19 @@ class Authentication extends React.Component {
                 }
             });
 
-        const onFailureLogin = () =>
+        const onFailureLogin = error =>
             this.setState({
                 loginStatus: {
                     loading: false,
                     error: true
-                }
+                },
+                error
             });
 
-        const onFailureRegister = () =>
+        const onFailureRegister = error =>
             this.setState({
-                registerStatus: { loading: false, error: true }
+                registerStatus: { loading: false, error: true },
+                error
             });
 
         if (type === 'loginViaPassword' || type === 'loginViaOtp')

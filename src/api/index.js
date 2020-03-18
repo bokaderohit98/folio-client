@@ -7,8 +7,8 @@ const loginViaPassword = (credentials, onFailure) => {
         .post(routes.loginViaPassword, credentials)
         .then(res => auth.login(res.data.token))
         .catch(err => {
-            console.log(err.response.data.error);
-            onFailure();
+            const error = err.response.data;
+            onFailure(error);
         });
 };
 
@@ -17,8 +17,8 @@ const loginViaOtp = (credentials, onFailure) => {
         .post(routes.loginViaOtp, credentials)
         .then(res => auth.login(res.data.token))
         .catch(err => {
-            console.log(err.response.data.error);
-            onFailure();
+            const error = err.response.data;
+            onFailure(error);
         });
 };
 
@@ -31,8 +31,8 @@ const register = (data, onSuccess, onFailureRegister, onFailureLogin) => {
             loginViaPassword(credentials, onFailureLogin);
         })
         .catch(err => {
-            console.log(err.response.data.error);
-            onFailureRegister();
+            const error = err.response.data;
+            onFailureRegister(error);
         });
 };
 
