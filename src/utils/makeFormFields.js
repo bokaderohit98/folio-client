@@ -5,7 +5,8 @@ import {
     Select,
     MenuItem,
     InputLabel,
-    FormControl
+    FormControl,
+    FormHelperText
 } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
@@ -37,7 +38,7 @@ const Container = styled.div`
     }
 `;
 
-export default ({ data, entity, loading, onChange }) => {
+export default ({ data, entity, error, loading, onChange }) => {
     const fields = dataFields[entity];
 
     const form = fields.map(({ name, required, type, choices, signature }) => {
@@ -50,6 +51,8 @@ export default ({ data, entity, loading, onChange }) => {
                         disabled={loading}
                         key={name}
                         value={data[name] || ''}
+                        error={error[name] && error[name].status}
+                        helperText={error[name] && error[name].message}
                         onChange={onChange(type, name)}
                     />
                 );
@@ -63,6 +66,8 @@ export default ({ data, entity, loading, onChange }) => {
                         multiline
                         rows={4}
                         value={data[name] || ''}
+                        error={error[name] && error[name].status}
+                        helperText={error[name] && error[name].message}
                         onChange={onChange(type, name)}
                     />
                 );
@@ -78,12 +83,17 @@ export default ({ data, entity, loading, onChange }) => {
                             value={
                                 data[name] ? new Date(Number(data[name])) : null
                             }
+                            error={error[name] && error[name].status}
+                            helperText={error[name] && error[name].message}
                         />
                     </MuiPickersUtilsProvider>
                 );
             case 'select':
                 return (
-                    <FormControl key={name}>
+                    <FormControl
+                        key={name}
+                        error={error[name] && error[name].status}
+                    >
                         <InputLabel id={name}>{`${capitalize(name)}${
                             required ? ' *' : ''
                         }`}</InputLabel>
@@ -99,6 +109,11 @@ export default ({ data, entity, loading, onChange }) => {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {error[name] && error[name].status && (
+                            <FormHelperText>
+                                {error[name] && error[name].message}
+                            </FormHelperText>
+                        )}
                     </FormControl>
                 );
             case 'map':

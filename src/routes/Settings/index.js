@@ -8,6 +8,8 @@ import Edit from './Edit';
 import { capitalize } from '../../utils/string';
 import { updateInfo } from '../../redux/actions';
 import PasswordChangeModal from './PasswordChangeModal';
+import dataFields from '../../constants/dataFields';
+import validations from '../../utils/validations';
 
 const Container = styled.div`
     display: flex;
@@ -54,7 +56,8 @@ class Settings extends React.Component {
         this.state = {
             user: { ...user },
             showPasswordChangeModal: false,
-            password: ''
+            password: '',
+            error: {}
         };
     }
 
@@ -64,7 +67,8 @@ class Settings extends React.Component {
 
         switch (type) {
             case 'date':
-                updated[attribute] = event.valueOf();
+                if (event && event.isValid)
+                    updated[attribute] = event.valueOf();
                 break;
             case 'select':
                 updated[attribute] = event.target.value;
@@ -86,7 +90,23 @@ class Settings extends React.Component {
         this.setState({ user: updated });
     };
 
+    handleValidations = () => {
+        const fields = dataFields.user;
+        const { user } = this.state;
+        const error = {};
+
+        fields.forEach(({ name, validation }) => {
+            if (validation) error[name] = validation(user[name]);
+        });
+
+        this.setState({ error });
+
+        const status = Object.keys(error).some(key => error[key].status);
+        return status;
+    };
+
     handleUpdate = () => {
+        if (this.handleValidations()) return;
         const { user } = this.state;
         const { updateInfo } = this.props;
         updateInfo(user);
@@ -107,6 +127,13 @@ class Settings extends React.Component {
 
     handlePasswordUpdate = () => {
         const { password } = this.state;
+        const error = {};
+
+        error.password = validations.password(password);
+        this.setState({ error });
+
+        if (error.password.status) return;
+
         const { updateInfo } = this.props;
         updateInfo({ password }, this.togglePasswordChangeModal);
     };
@@ -115,7 +142,8 @@ class Settings extends React.Component {
         const {
             user: instance,
             showPasswordChangeModal,
-            password
+            password,
+            error
         } = this.state;
         const { loading, user } = this.props;
 
@@ -133,6 +161,7 @@ class Settings extends React.Component {
                 <Edit
                     data={instance}
                     loading={loading}
+                    error={error}
                     onChange={this.handleChange}
                     onUpdate={this.handleUpdate}
                 />
@@ -140,6 +169,7 @@ class Settings extends React.Component {
                     show={showPasswordChangeModal}
                     data={password}
                     disabled={loading}
+                    error={error}
                     onChange={this.handlePasswordChange}
                     onUpdate={this.handlePasswordUpdate}
                     onClose={this.togglePasswordChangeModal}

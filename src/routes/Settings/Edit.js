@@ -13,10 +13,10 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const Edit = ({ data, loading, onChange, onUpdate }) => {
+const Edit = ({ data, loading, error, onChange, onUpdate }) => {
     return (
         <Container>
-            {makeFormFields({ entity: 'user', data, loading, onChange })}
+            {makeFormFields({ entity: 'user', data, loading, error, onChange })}
             <Button
                 color="primary"
                 disabled={loading}

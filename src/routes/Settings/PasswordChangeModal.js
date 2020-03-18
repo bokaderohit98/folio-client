@@ -34,6 +34,7 @@ const PasswordChangeModal = ({
     show,
     data,
     disabled,
+    error,
     onChange,
     onUpdate,
     onClose
@@ -61,6 +62,10 @@ const PasswordChangeModal = ({
                                 variant="outlined"
                                 disabled={disabled}
                                 value={data}
+                                error={error.password && error.password.status}
+                                helperText={
+                                    error.password && error.password.message
+                                }
                                 onChange={onChange}
                             />
                         </InputContainer>

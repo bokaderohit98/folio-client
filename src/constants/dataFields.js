@@ -2,35 +2,92 @@ import validations from '../utils/validations';
 
 export default {
     education: [
-        { name: 'from', type: 'date', required: true },
-        { name: 'to', type: 'date', required: true },
-        { name: 'institute', type: 'string', required: true },
-        { name: 'degree', type: 'string', required: true },
+        {
+            name: 'from',
+            type: 'date',
+            required: true,
+            validaton: validations.date
+        },
+        {
+            name: 'to',
+            type: 'date',
+            required: true,
+            validation: validations.date
+        },
+        {
+            name: 'institute',
+            type: 'string',
+            required: true,
+            validation: validations.string(3)
+        },
+        {
+            name: 'degree',
+            type: 'string',
+            required: true,
+            validation: validations.string(2)
+        },
         { name: 'specialization', type: 'string' }
     ],
     work: [
-        { name: 'from', type: 'date', required: true },
-        { name: 'to', type: 'date', required: true },
-        { name: 'organization', type: 'string', required: true },
-        { name: 'position', type: 'string', required: true }
+        {
+            name: 'from',
+            type: 'date',
+            required: true,
+            validation: validations.date
+        },
+        {
+            name: 'to',
+            type: 'date',
+            required: true,
+            validation: validations.date
+        },
+        {
+            name: 'organization',
+            type: 'string',
+            required: true,
+            validation: validations.string(3)
+        },
+        {
+            name: 'position',
+            type: 'string',
+            required: true,
+            validation: validations.string(2)
+        }
     ],
     achivement: [
-        { name: 'date', type: 'date', required: true },
-        { name: 'title', type: 'string', required: true },
+        {
+            name: 'date',
+            type: 'date',
+            required: true,
+            validation: validations.date
+        },
+        {
+            name: 'title',
+            type: 'string',
+            required: true,
+            validation: validations.string(5)
+        },
         { name: 'description', type: 'long-string', required: false }
     ],
     user: [
-        { name: 'name', type: 'string', required: true },
+        {
+            name: 'name',
+            type: 'string',
+            required: true,
+            validation: validations.string(3)
+        },
         {
             name: 'gender',
             type: 'select',
             required: true,
-            choices: ['male', 'female', 'other']
+            choices: ['male', 'female', 'other'],
+            validation: validations.select
         },
         {
             name: 'dob',
             type: 'date',
-            required: true
+            required: true,
+            validation: validations.date
         },
         {
             name: 'social_handles',
