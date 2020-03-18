@@ -41,13 +41,13 @@ const date = value => {
     if (!value)
         return {
             status: true,
-            message: 'Missing Date'
+            message: 'Missing or Invalid Date'
         };
     return { status: false };
 };
 
 const dateRange = (from, to) => {
-    if (from.valueOf() >= to.valueOf())
+    if (!from || !to || (from && to && from.valueOf() >= to.valueOf()))
         return {
             status: true,
             message: `Invalid Date Range`

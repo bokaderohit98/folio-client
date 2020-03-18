@@ -6,13 +6,13 @@ export default {
             name: 'from',
             type: 'date',
             required: true,
-            validaton: validations.date
+            validation: validations.dateRange
         },
         {
             name: 'to',
             type: 'date',
             required: true,
-            validation: validations.date
+            validation: validations.dateRange
         },
         {
             name: 'institute',
@@ -33,13 +33,13 @@ export default {
             name: 'from',
             type: 'date',
             required: true,
-            validation: validations.date
+            validation: validations.dateRange
         },
         {
             name: 'to',
             type: 'date',
             required: true,
-            validation: validations.date
+            validation: validations.dateRange
         },
         {
             name: 'organization',

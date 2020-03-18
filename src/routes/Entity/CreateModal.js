@@ -19,6 +19,7 @@ const CreateModal = ({
     data,
     entity,
     loading,
+    error,
     onClose,
     onSuccess,
     onChange
@@ -51,6 +52,7 @@ const CreateModal = ({
                             type,
                             data,
                             entity,
+                            error,
                             loading,
                             onChange
                         })}

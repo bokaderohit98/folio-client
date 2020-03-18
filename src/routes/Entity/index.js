@@ -1,13 +1,15 @@
 import React from 'react';
 import { Fab } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { createEntity, deleteEntity } from '../../redux/actions';
 
+import { createEntity, deleteEntity } from '../../redux/actions';
 import Empty from './Empty';
 import Listing from './Listing';
 import ListingMenu from './ListingMenu';
 import CreateModal from './CreateModal';
 import DeleteModal from './DeleteModal';
+import dataFields from '../../constants/dataFields';
+import validations from '../../utils/validations';
 
 class Entity extends React.Component {
     constructor(props) {
@@ -19,7 +21,8 @@ class Entity extends React.Component {
                 delete: false,
                 edit: false,
                 create: false
-            }
+            },
+            error: {}
         };
     }
 
@@ -64,7 +67,28 @@ class Entity extends React.Component {
         this.handleToggleModal('delete')();
     };
 
+    handleValidation = () => {
+        const { type } = this.props;
+        const { instance } = this.state;
+        const fields = dataFields[type];
+        const error = {};
+
+        fields.forEach(({ name, validation }) => {
+            if (validation && (name === 'from' || name === 'to'))
+                error[name] = validation(instance.from, instance.to);
+            else if (validation) error[name] = validation(instance[name]);
+        });
+
+        let status = Object.keys(error).some(key => error[key].status);
+
+        this.setState({ error });
+
+        return status;
+    };
+
     handleCreateEdit = requestType => () => {
+        if (this.handleValidation()) return;
+
         const { instance } = this.state;
         const { createEntity, type } = this.props;
         createEntity(
@@ -76,7 +100,7 @@ class Entity extends React.Component {
     };
 
     render() {
-        const { showModal, instance, anchorPosition } = this.state;
+        const { showModal, instance, anchorPosition, error } = this.state;
         const { data, type, createEntityLoading } = this.props;
         const entityData = data[type];
 
@@ -128,6 +152,7 @@ class Entity extends React.Component {
                     type="create"
                     data={instance}
                     loading={createEntityLoading}
+                    error={error}
                     onClose={this.handleToggleModal('create')}
                     onSuccess={this.handleCreateEdit('create')}
                     onChange={this.handleChange}
@@ -137,6 +162,7 @@ class Entity extends React.Component {
                     entity={type}
                     type="edit"
                     data={instance}
+                    error={error}
                     loading={createEntityLoading}
                     onClose={this.handleToggleModal('edit')}
                     onSuccess={this.handleCreateEdit('edit')}
