@@ -18,6 +18,10 @@ const Container = styled.div`
     height: 100vh;
     background: ${props => props.theme.palette.background.paper};
     color: ${props => props.theme.palette.text.primary};
+
+    @media (max-width: 768px) {
+        padding-top: 48px;
+    }
 `;
 
 const PasswordButtonContainer = styled.div`

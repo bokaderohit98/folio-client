@@ -20,6 +20,10 @@ const Container = styled.div`
     padding: 0;
     min-height: 100vh;
     background: ${props => props.theme.palette.background.paper};
+
+    @media (max-width: 768px) {
+        padding-top: 48px;
+    }
 `;
 
 const Heading = styled.h1`

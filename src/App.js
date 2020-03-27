@@ -18,6 +18,11 @@ const Container = styled.div`
     width: calc(100% - 240px);
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        left: 0;
+    }
 `;
 
 const makeRoutes = ({ darkMode, setDarkMode }) => {

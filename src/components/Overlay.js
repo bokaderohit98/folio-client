@@ -15,8 +15,8 @@ const Container = styled.div`
     background: ${props => props.theme.palette.grey.A700};
 `;
 
-const Overlay = () => {
-    return <Container />;
+const Overlay = ({ style, onClick }) => {
+    return <Container style={style} onClick={onClick} />;
 };
 
 export default Overlay;
