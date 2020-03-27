@@ -7,43 +7,66 @@ import Secondary from './Secondary';
 
 import api from '../../api';
 import dataFields from '../../constants/dataFields';
+import ToggleMode from './ToggleMode';
 
 const Container = styled.div`
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     position: relative;
 
-    .SecondaryRight {
-        transform: translateX(0);
-    }
+    @media (min-width: 769px) {
+        .SecondaryRight {
+            transform: translateX(0);
+        }
 
-    .SecondaryLeft {
-        transform: translateX(-100%);
-    }
+        .SecondaryLeft {
+            transform: translateX(-100%);
+        }
 
-    .PrimaryLeft {
-        transform: translateX(0);
-    }
+        .PrimaryLeft {
+            transform: translateX(0);
+        }
 
-    .PrimaryRight {
-        transform: translateX(100%);
+        .PrimaryRight {
+            transform: translateX(100%);
+        }
+    }
+`;
+
+const Background = styled.div`
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    border-color: transparent transparent #1144e8 transparent;
+    border-width: 0 100px 100vh 0;
+    display: none;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        display: block;
     }
 `;
 
 const PrimaryContainer = styled.div`
     display: flex;
     width: 50%;
-    height: 100vh;
+    min-height: 100vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        background: transparent;
+        padding-bottom: 56px;
+    }
 `;
 
 const SecondaryContainer = styled.div`
     display: flex;
     width: 50%;
-    height: 100vh;
+    min-height: 100vh;
     transition: 0.3s all;
 
     .Left {
@@ -70,6 +93,10 @@ const SecondaryContainer = styled.div`
     .RightBorder {
         border-width: 0 100px 100vh 0;
         border-color: transparent transparent #1144e8 transparent;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
     }
 `;
 
@@ -330,43 +357,50 @@ class Authentication extends React.Component {
         } = this.state;
 
         return (
-            <Container>
-                <PrimaryContainer className={primaryClass}>
-                    <Primary
-                        mode={mode}
-                        subMode={subMode}
-                        data={data}
-                        getOtpStatus={getOtpStatus}
-                        loginStatus={loginStatus}
-                        registerStatus={registerStatus}
-                        error={error}
-                        onToggleSubMode={this.handleToggleSubMode}
-                        onChange={this.handleChange}
-                        onSubmit={this.handleSubmit}
-                        onGetOtp={this.handleGetOtp}
-                    />
-                </PrimaryContainer>
-                <SecondaryContainer className={secondaryClass}>
-                    <SecondaryContent className={secondaryContentClass}>
-                        <Secondary
+            <>
+                <Background />
+                <Container>
+                    <PrimaryContainer className={primaryClass}>
+                        <Primary
                             mode={mode}
-                            disabled={
-                                getOtpStatus.loading ||
-                                loginStatus.loading ||
-                                registerStatus.loading ||
-                                registerStatus.success
-                            }
-                            onToggleMode={this.handleToggleMode}
+                            subMode={subMode}
+                            data={data}
+                            getOtpStatus={getOtpStatus}
+                            loginStatus={loginStatus}
+                            registerStatus={registerStatus}
+                            error={error}
+                            onToggleSubMode={this.handleToggleSubMode}
+                            onChange={this.handleChange}
+                            onSubmit={this.handleSubmit}
+                            onGetOtp={this.handleGetOtp}
                         />
-                    </SecondaryContent>
-                    <SecondaryBorder
-                        className={[
-                            secondaryBorderPositionClass,
-                            secondaryBorderStyleClass
-                        ].join(' ')}
+                    </PrimaryContainer>
+                    <SecondaryContainer className={secondaryClass}>
+                        <SecondaryContent className={secondaryContentClass}>
+                            <Secondary
+                                mode={mode}
+                                disabled={
+                                    getOtpStatus.loading ||
+                                    loginStatus.loading ||
+                                    registerStatus.loading ||
+                                    registerStatus.success
+                                }
+                                onToggleMode={this.handleToggleMode}
+                            />
+                        </SecondaryContent>
+                        <SecondaryBorder
+                            className={[
+                                secondaryBorderPositionClass,
+                                secondaryBorderStyleClass
+                            ].join(' ')}
+                        />
+                    </SecondaryContainer>
+                    <ToggleMode
+                        mode={mode}
+                        onToggleMode={this.handleToggleMode}
                     />
-                </SecondaryContainer>
-            </Container>
+                </Container>
+            </>
         );
     }
 }
