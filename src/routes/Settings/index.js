@@ -1,9 +1,9 @@
 /* eslint-disable no-case-declarations */
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { Avatar, IconButton } from '@material-ui/core';
 import { connect } from 'react-redux';
-import avatar from '../../assets/avatarFemale.png';
+import ClipLoader from 'react-spinners/ClipLoader';
 import Edit from './Edit';
 import { capitalize } from '../../utils/string';
 import { updateInfo } from '../../redux/actions';
@@ -36,16 +36,46 @@ const Head = styled.div`
     padding: 32px;
     margin-top: 32px;
 
-    .MuiAvatar-root,
-    .MuiAvatar-img {
-        width: 200px;
-        height: 200px;
-        background: ${props => props.theme.palette.text.primary};
-    }
-
     p {
         font-size: 36px;
         font-weight: 500;
+    }
+`;
+
+const AvatarContainer = styled.div`
+    position: relative;
+
+    .MuiAvatar-root {
+        background: ${props => props.theme.palette.text.primary};
+        height: 180px;
+        width: 180px;
+    }
+`;
+
+const AvatarOverlay = styled.label`
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border-radius: 50%;
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    color: ${props => props.theme.palette.background.paper};
+    transition: 0.3s all;
+
+    :hover {
+        background: ${props => props.theme.palette.text.primary};
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    input {
+        display: none;
     }
 `;
 
@@ -140,6 +170,14 @@ class Settings extends React.Component {
         updateInfo({ password }, this.togglePasswordChangeModal);
     };
 
+    handleAvatarChange = event => {
+        const { files } = event.target;
+        const { updateInfo } = this.props;
+        const data = new FormData();
+        data.append('avatar', files[0]);
+        updateInfo(data);
+    };
+
     render() {
         const {
             user: instance,
@@ -147,7 +185,7 @@ class Settings extends React.Component {
             password,
             error
         } = this.state;
-        const { loading, user } = this.props;
+        const { loading, user, theme } = this.props;
 
         return (
             <Container>
@@ -157,7 +195,28 @@ class Settings extends React.Component {
                     </IconButton>
                 </PasswordButtonContainer>
                 <Head>
-                    <Avatar src={avatar} />
+                    <AvatarContainer>
+                        <Avatar src={`/images/${user.avatar}`} />
+                        <AvatarOverlay>
+                            {loading && (
+                                <ClipLoader
+                                    size={16}
+                                    color={theme.palette.background.paper}
+                                />
+                            )}
+                            {!loading && (
+                                <>
+                                    <i className="material-icons">camera</i>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        name="avatar"
+                                        onChange={this.handleAvatarChange}
+                                    />
+                                </>
+                            )}
+                        </AvatarOverlay>
+                    </AvatarContainer>
                     <p>{capitalize(user.name)}</p>
                 </Head>
                 <Edit
@@ -189,4 +248,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { updateInfo };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withTheme(Settings));

@@ -4,3 +4,4 @@ export { default as Map } from './Map';
 export { default as WithAuth } from './WithAuth';
 export { default as Loading } from './Loading';
 export { default as WithVerification } from './WithVerification';
+export { default as Error } from './Error';

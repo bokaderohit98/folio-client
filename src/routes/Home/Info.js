@@ -14,8 +14,8 @@ const Container = styled.div`
     align-items: center;
 
     .MuiAvatar-root {
-        width: 200px;
-        height: 200px;
+        width: 180px;
+        height: 180px;
         background: ${props => props.theme.palette.text.primary};
     }
 `;
@@ -63,10 +63,10 @@ const Chips = styled.div`
 `;
 
 const Info = ({ data }) => {
-    const { name, social_handles: socialHandles, gender, dob } = data;
+    const { name, social_handles: socialHandles, gender, dob, avatar } = data;
     return (
         <Container>
-            <Avatar src={avatar} />
+            <Avatar src={`/images/${avatar}`} />
             <Name>{capitalize(name)}</Name>
             <Chips>
                 <Chip label={capitalize(gender)} color="primary" />

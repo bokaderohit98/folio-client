@@ -2,11 +2,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Switch } from '@material-ui/core';
+import { Switch, Avatar } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
 import routes from '../constants/routes';
-import avatar from '../assets/avatarFemale.png';
 
 const Container = styled.div`
     width: 240px;
@@ -33,14 +32,18 @@ const Background = styled.div`
     background: ${props => props.theme.palette.primary.main};
 `;
 
-const Avatar = styled.img`
-    height: 80px;
-    width: 80px;
+const AvatarContainer = styled.div`
     background: white;
     position: absolute;
     left: 80px;
     top: 80px;
     border-radius: 40px;
+
+    .MuiAvatar-root {
+        background: ${props => props.theme.palette.text.primary};
+        height: 80px;
+        width: 80px;
+    }
 `;
 
 const LinksContainer = styled.div`
@@ -99,7 +102,15 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         <Container>
             <HeaderContainer>
                 <Background />
-                <Avatar src={avatar} />
+                <AvatarContainer>
+                    <Avatar
+                        src={`/images/${
+                            user && user.avatar
+                                ? user.avatar
+                                : 'avatarOther.png'
+                        }`}
+                    />
+                </AvatarContainer>
             </HeaderContainer>
             <LinksContainer>{makeMenu(user.verified)}</LinksContainer>
             <OtherLink>

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styled from 'styled-components';
@@ -124,6 +125,12 @@ class Authentication extends React.Component {
         error: {}
     };
 
+    componentDidMount() {
+        const query = new URLSearchParams(browserHistory.location.search);
+        const token = query.get('token');
+        if (token) auth.login(token);
+    }
+
     handleToggleMode = () => {
         const { mode } = this.state;
         this.setState({
@@ -141,7 +148,6 @@ class Authentication extends React.Component {
     };
 
     handleChange = entity => (type, attribute) => event => {
-        const fields = dataFields[entity];
         const { data, error } = this.state;
         const updatedError = { ...error };
         const updatedData = { ...data };

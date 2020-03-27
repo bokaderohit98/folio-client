@@ -4,7 +4,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { Switch, Route, useHistory } from 'react-router-dom';
 
 import routes from './constants/routes';
-import { Sidebar, WithAuth, WithVerification } from './components';
+import { Sidebar, WithAuth, WithVerification, Error } from './components';
 import { Authentication } from './routes';
 import ThemeService from './utils/themeService';
 import AuthService from './utils/authService';
@@ -23,6 +23,7 @@ const makeRoutes = ({ darkMode, setDarkMode }) => {
         ({ path, Component, exact, verificationRequired, props }) => {
             const link = (
                 <WithAuth>
+                    <Error />
                     <Sidebar
                         darkMode={darkMode}
                         toggleDarkMode={() => setDarkMode(!darkMode)}

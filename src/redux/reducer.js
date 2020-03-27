@@ -10,7 +10,9 @@ const initialState = {
     createEntityLoading: false,
     createEntityError: false,
     updateInfoLoading: false,
-    updateInfoError: false
+    updateInfoError: false,
+    errorMessage: '',
+    deletedEntity: {}
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -18,7 +20,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
         case actionsType.FETCH_USER_BEGIN:
             return {
                 ...state,
-                userLoading: true
+                userLoading: true,
+                userError: false
             };
 
         case actionsType.FETCH_USER_SUCCESS:
@@ -35,7 +38,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 userLoading: false,
-                userError: payload.error
+                userError: true,
+                errorMessage: payload.error
             };
 
         case actionsType.CREATE_ENTITY_BEGIN:
@@ -56,15 +60,33 @@ const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 createEntityLoading: false,
-                createEntityError: true
+                createEntityError: true,
+                errorMessage: payload.error
             };
 
         case actionsType.DELETE_ENTITY_SUCCESS:
             return {
                 ...state,
+                deletedEntity: state[`${payload.entityType}s`].find(
+                    item => item._id === payload.id
+                ),
                 [`${payload.entityType}s`]: [
                     ...state[`${payload.entityType}s`]
-                ].filter(item => item._id !== payload.id)
+                ].filter(item => item._id !== payload.id),
+                deleteEntityError: false,
+                errorMessage: ''
+            };
+
+        case actionsType.DELETE_ENTITY_ERROR:
+            return {
+                ...state,
+                [`${payload.entityType}s`]: [
+                    ...state[`${payload.entityType}s`],
+                    { ...state.deletedEntity }
+                ],
+                deletedEntity: {},
+                deleteEntityError: true,
+                errorMessage: payload.error
             };
 
         case actionsType.UPDATE_INFO_BEGIN:
@@ -78,7 +100,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 updateInfoLoading: false,
-                updateInfoError: payload.error
+                updateInfoError: true,
+                errorMessage: payload.error
             };
 
         case actionsType.UPDATE_INFO_SUCCESS:
@@ -87,6 +110,17 @@ const rootReducer = (state = initialState, { type, payload }) => {
                 updateInfoLoading: false,
                 user: payload.user
             };
+
+        case actionsType.CLEAR_ERROR:
+            return {
+                ...state,
+                userError: false,
+                updateInfoError: false,
+                createEntityError: false,
+                deleteEntityError: false,
+                errorMessage: ''
+            };
+
         default:
             return { ...state };
     }
