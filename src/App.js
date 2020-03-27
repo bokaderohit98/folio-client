@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { Switch, Route, useHistory } from 'react-router-dom';
+import ScrollBar from 'react-perfect-scrollbar';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 import routes from './constants/routes';
 import { Sidebar, WithAuth, WithVerification, Error } from './components';
@@ -29,7 +31,9 @@ const makeRoutes = ({ darkMode, setDarkMode }) => {
                         toggleDarkMode={() => setDarkMode(!darkMode)}
                     />
                     <Container>
-                        <Component {...props} />
+                        <ScrollBar>
+                            <Component {...props} />
+                        </ScrollBar>
                     </Container>
                 </WithAuth>
             );

@@ -10,13 +10,15 @@ import {
     TableCell,
     Paper
 } from '@material-ui/core';
+import ScrollBar from 'react-perfect-scrollbar';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 import dataFields from '../../constants/dataFields';
 import { getDate } from '../../utils/date';
 
 const Container = styled.div`
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     background: ${props => props.theme.palette.background.paper};
 `;
 
@@ -32,13 +34,14 @@ const Heading = styled.h1`
 const DataTable = styled.div`
     padding: 0 12px;
     .MuiTableContainer-root {
-        box-shadow: ${props => props.theme.shadows[10]};
-        max-height: 70vh;
+        box-shadow: ${props => props.theme.shadows[5]};
+        background: ${props => props.theme.palette.background.paper};
     }
     .MuiTableCell-head,
     .MuiTableCell-body {
         background: ${props => props.theme.palette.background.paper};
         color: ${props => props.theme.palette.text.primary};
+        border-color: ${props => props.theme.palette.background.default};
     }
 `;
 
@@ -46,40 +49,44 @@ const makeTable = (type, data, onMenuClick) => {
     const fields = dataFields[type];
     return (
         <TableContainer component={Paper}>
-            <Table stickyHeader>
-                <TableHead>
-                    <TableRow>
-                        {fields.map(({ name }) => (
-                            <TableCell key={name}>
-                                {name.toUpperCase()}
-                            </TableCell>
-                        ))}
-                        <TableCell> </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map(row => (
-                        <TableRow key={Math.random()}>
-                            {fields.map(({ name, type }) => (
+            <ScrollBar>
+                <Table stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            {fields.map(({ name }) => (
                                 <TableCell key={name}>
-                                    {type === 'date' && row[name]
-                                        ? getDate(row[name])
-                                        : row[name] || '-'}
+                                    {name.toUpperCase()}
                                 </TableCell>
                             ))}
-                            <TableCell>
-                                <IconButton
-                                    color="secondary"
-                                    onClick={onMenuClick(row)}
-                                >
-                                    <i className="material-icons">more_vert</i>
-                                </IconButton>
-                            </TableCell>
+                            <TableCell> </TableCell>
                         </TableRow>
-                    ))}
-                    <TableRow />
-                </TableBody>
-            </Table>
+                    </TableHead>
+
+                    <TableBody>
+                        {data.map(row => (
+                            <TableRow key={Math.random()}>
+                                {fields.map(({ name, type }) => (
+                                    <TableCell key={name}>
+                                        {type === 'date' && row[name]
+                                            ? getDate(row[name])
+                                            : row[name] || '-'}
+                                    </TableCell>
+                                ))}
+                                <TableCell>
+                                    <IconButton
+                                        color="secondary"
+                                        onClick={onMenuClick(row)}
+                                    >
+                                        <i className="material-icons">
+                                            more_vert
+                                        </i>
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </ScrollBar>
         </TableContainer>
     );
 };

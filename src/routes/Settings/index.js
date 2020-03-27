@@ -35,6 +35,7 @@ const Head = styled.div`
     align-items: center;
     padding: 32px;
     margin-top: 32px;
+    background: ${props => props.theme.palette.background.paper};
 
     p {
         font-size: 36px;

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Grid, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import ClipLoader from 'react-spinners/ClipLoader';
+import ScrollBar from 'react-perfect-scrollbar';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 import { Loading } from '../../components';
 import api from '../../api';
@@ -17,6 +19,7 @@ const Container = styled.div`
     align-items: center;
 
     .InfoGrid {
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -29,8 +32,12 @@ const EntityContainer = styled(Grid)`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
     overflow: auto;
+    max-height: 100vh;
+
+    @media (max-width: 768px) {
+        max-height: none;
+    }
 `;
 
 const UnverifiedBanner = styled.div`
@@ -114,45 +121,57 @@ class Home extends React.Component {
                 {!loading && !error && (
                     <Container>
                         <Grid container>
-                            <Grid item sm={6} className="InfoGrid">
+                            <Grid item md={6} className="InfoGrid">
                                 <Info data={user} />
                             </Grid>
-                            <EntityContainer item sm={6}>
-                                {user && !user.verified && (
-                                    <UnverifiedBanner>
-                                        <p>
-                                            Veriify your email address to access
-                                            full features!
-                                        </p>
-
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            disabled={verificationEmailLoading}
-                                            onClick={
-                                                this
-                                                    .handleResendVerificationEmail
-                                            }
-                                        >
-                                            {verificationEmailLoading ? (
-                                                <ClipLoader
-                                                    size={16}
-                                                    color="#ffffff"
-                                                />
-                                            ) : (
-                                                'Resend Email'
-                                            )}
-                                        </Button>
-                                        {verificationEmailSuccess && (
-                                            <p className="Message">
-                                                Verification Email Sent!
+                            <EntityContainer item md={6}>
+                                <ScrollBar
+                                    style={{ padding: '18px 12px 12px 0' }}
+                                >
+                                    {user && !user.verified && (
+                                        <UnverifiedBanner>
+                                            <p>
+                                                Veriify your email address to
+                                                access full features!
                                             </p>
-                                        )}
-                                    </UnverifiedBanner>
-                                )}
-                                <Entity label="education" data={education} />
-                                <Entity label="work" data={work} />
-                                <Entity label="achivement" data={achivement} />
+
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                disabled={
+                                                    verificationEmailLoading
+                                                }
+                                                onClick={
+                                                    this
+                                                        .handleResendVerificationEmail
+                                                }
+                                            >
+                                                {verificationEmailLoading ? (
+                                                    <ClipLoader
+                                                        size={16}
+                                                        color="#ffffff"
+                                                    />
+                                                ) : (
+                                                    'Resend Email'
+                                                )}
+                                            </Button>
+                                            {verificationEmailSuccess && (
+                                                <p className="Message">
+                                                    Verification Email Sent!
+                                                </p>
+                                            )}
+                                        </UnverifiedBanner>
+                                    )}
+                                    <Entity
+                                        label="education"
+                                        data={education}
+                                    />
+                                    <Entity label="work" data={work} />
+                                    <Entity
+                                        label="achivement"
+                                        data={achivement}
+                                    />
+                                </ScrollBar>
                             </EntityContainer>
                         </Grid>
                     </Container>

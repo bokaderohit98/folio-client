@@ -4,14 +4,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Switch, Avatar } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import ScrollBar from 'react-perfect-scrollbar';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 import routes from '../constants/routes';
 
 const Container = styled.div`
     width: 240px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
     background: ${props => props.theme.palette.background.paper};
     border: ${props => {
         console.log(props.theme);
@@ -21,6 +20,14 @@ const Container = styled.div`
     position: fixed;
     left: 0px;
     top: 0px;
+    overflow: auto;
+`;
+
+const Content = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 `;
 
 const HeaderContainer = styled.div`
@@ -50,7 +57,7 @@ const LinksContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-top: 20px;
+    margin-top: 80px;
 
     .disabled {
         opacity: 0.5;
@@ -100,24 +107,28 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
     const user = useSelector(state => state.user);
     return (
         <Container>
-            <HeaderContainer>
-                <Background />
-                <AvatarContainer>
-                    <Avatar
-                        src={`/images/${
-                            user && user.avatar
-                                ? user.avatar
-                                : 'avatarOther.png'
-                        }`}
-                    />
-                </AvatarContainer>
-            </HeaderContainer>
-            <LinksContainer>{makeMenu(user.verified)}</LinksContainer>
-            <OtherLink>
-                Dark Mode{' '}
-                <Switch checked={darkMode} onChange={toggleDarkMode} />
-            </OtherLink>
-            <OtherLink onClick={auth.logout}>Logout</OtherLink>
+            <ScrollBar>
+                <Content>
+                    <HeaderContainer>
+                        <Background />
+                        <AvatarContainer>
+                            <Avatar
+                                src={`/images/${
+                                    user && user.avatar
+                                        ? user.avatar
+                                        : 'avatarOther.png'
+                                }`}
+                            />
+                        </AvatarContainer>
+                    </HeaderContainer>
+                    <LinksContainer>{makeMenu(user.verified)}</LinksContainer>
+                    <OtherLink>
+                        Dark Mode{' '}
+                        <Switch checked={darkMode} onChange={toggleDarkMode} />
+                    </OtherLink>
+                    <OtherLink onClick={auth.logout}>Logout</OtherLink>
+                </Content>
+            </ScrollBar>
         </Container>
     );
 };
