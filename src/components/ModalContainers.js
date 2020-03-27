@@ -23,6 +23,14 @@ export const Main = styled.div`
     box-shadow: ${props => props.theme.shadows[6]};
     color: ${props => props.theme.palette.text.primary};
     z-index: 1001;
+
+    @media (max-width: 640px) {
+        width: 100%;
+        height: 100vh;
+        padding-top: 32px;
+        justify-content: center;
+        align-items: center;
+    }
 `;
 
 export const Title = styled.p`
