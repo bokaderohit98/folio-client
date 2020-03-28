@@ -182,7 +182,7 @@ class Authentication extends React.Component {
         if (type === 'string')
             updatedData[entity][attribute] = event.target.value;
         else if (type === 'date')
-            updatedData[entity][attribute] = event.valueOf();
+            updatedData[entity][attribute] = event ? event.valueOf() : '';
         else if (type === 'select')
             updatedData[entity][attribute] = event.target.value;
 

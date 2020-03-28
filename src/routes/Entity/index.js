@@ -55,7 +55,8 @@ class Entity extends React.Component {
         if (type === 'string' || type === 'long-string') {
             const { value } = event.target;
             updated[attribute] = value;
-        } else if (type === 'date') updated[attribute] = event.valueOf();
+        } else if (type === 'date')
+            updated[attribute] = event ? event.valueOf() : '';
 
         updatedError[attribute] = {};
         this.setState({ instance: updated, error: updatedError });

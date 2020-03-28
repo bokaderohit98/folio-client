@@ -30,14 +30,8 @@ export const getUser = () => dispatch => {
                 }
             });
         })
-        .catch(err =>
-            dispatch({
-                type: actionsType.FETCH_USER_ERROR,
-                payload: {
-                    error: errorHandler(err)
-                }
-            })
-        );
+        // eslint-disable-next-line no-undef
+        .catch(err => auth.logout());
 };
 
 export const updateInfo = (data, onSuccess) => dispatch => {
